@@ -1,59 +1,58 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pengukuran Kayu</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="container">
-    <h1>📘 PENGUKURAN KAYU</h1>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Pengukuran Kayu</title>
+      <link rel="stylesheet" href="styles.css" />
+   </head>
+   <body>
+      <div class="container">
+         <h1>📘 PENGUKURAN KAYU</h1>
 
-    <div class="input-section">
-      <input type="number" id="panjang" placeholder="Panjang (cm)">
-      <input type="number" id="diaA" placeholder="Diameter A (cm)">
-      <input type="number" id="diaB" placeholder="Diameter B (cm)">
-      <button onclick="tambahKayu()">➕ Tambahkan Kayu</button>
-    </div>
+         <div class="input-section">
+            <input type="number" id="panjang" placeholder="Panjang (cm)" />
+            <input type="number" id="diaA" placeholder="Diameter A (cm)" />
+            <input type="number" id="diaB" placeholder="Diameter B (cm)" />
+            <button onclick="tambahKayu()">➕ Tambahkan Kayu</button>
+         </div>
 
-    <table id="tabelKayu">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Panjang</th>
-          <!-- <th>Dia A</th> -->
-          <!-- <th>Dia B</th> -->
-          <th>Min Dia</th>
-          <th>Volume (m³)</th>
-          <th>Jumlah</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+         <table id="tabelKayu">
+            <thead>
+               <tr>
+                  <th>No</th>
+                  <th>Panjang</th>
+                  <!-- <th>Dia A</th> -->
+                  <!-- <th>Dia B</th> -->
+                  <th>Min Dia</th>
+                  <th>Volume (m³)</th>
+                  <th>Jumlah</th>
+               </tr>
+            </thead>
+            <tbody></tbody>
+         </table>
 
-    <div class="input-tally">
-      <h2>🪵 Input Kayu - Panjang 130 cm</h2>
-      <div>
+         <div class="input-tally">
+            <h2>🪵 Input Kayu - Panjang 130 cm</h2>
+            <!-- <div>
         <button onclick="tambahKayuTally(130, 8)">➕ Ø8</button>
         <button onclick="tambahKayuTally(130, 9)">➕ Ø9</button>
         <button onclick="tambahKayuTally(130, 10)">➕ Ø10</button>
       </div>
-      <div id="rekap130" class="rekap-box"></div>
-    </div>
+      <div id="rekap130" class="rekap-box"></div> -->
+         </div>
 
+         <div class="summary">
+            <p>Total Kayu: <span id="totalKayu">0</span> batang</p>
+            <p>Total Volume: <span id="totalVolume">0.000</span> m³</p>
+         </div>
 
-    <div class="summary">
-      <p>Total Kayu: <span id="totalKayu">0</span> batang</p>
-      <p>Total Volume: <span id="totalVolume">0.000</span> m³</p>
-    </div>
+         <div class="buttons">
+            <button onclick="resetData()">🔄 Reset</button>
+            <button onclick="exportCSV()">💾 Simpan CSV</button>
+         </div>
+      </div>
 
-    <div class="buttons">
-      <button onclick="resetData()">🔄 Reset</button>
-      <button onclick="exportCSV()">💾 Simpan CSV</button>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
+      <script src="app.js"></script>
+   </body>
 </html>
