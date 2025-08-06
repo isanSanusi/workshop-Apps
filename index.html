@@ -1,58 +1,79 @@
 <!DOCTYPE html>
 <html lang="id">
-   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Pengukuran Kayu</title>
-      <link rel="stylesheet" href="styles.css" />
-   </head>
-   <body>
-      <div class="container">
-         <h1>📘 PENGUKURAN KAYU</h1>
-
-         <div class="input-section">
-            <input type="number" id="panjang" placeholder="Panjang (cm)" />
-            <input type="number" id="diaA" placeholder="Diameter A (cm)" />
-            <input type="number" id="diaB" placeholder="Diameter B (cm)" />
-            <button onclick="tambahKayu()">➕ Tambahkan Kayu</button>
-         </div>
-
-         <table id="tabelKayu">
-            <thead>
-               <tr>
-                  <th>No</th>
-                  <th>Panjang</th>
-                  <!-- <th>Dia A</th> -->
-                  <!-- <th>Dia B</th> -->
-                  <th>Min Dia</th>
-                  <th>Volume (m³)</th>
-                  <th>Jumlah</th>
-               </tr>
-            </thead>
-            <tbody></tbody>
-         </table>
-
-         <div class="input-tally">
-            <h2>🪵 Input Kayu - Panjang 130 cm</h2>
-            <!-- <div>
-        <button onclick="tambahKayuTally(130, 8)">➕ Ø8</button>
-        <button onclick="tambahKayuTally(130, 9)">➕ Ø9</button>
-        <button onclick="tambahKayuTally(130, 10)">➕ Ø10</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengukuran Kayu</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Halaman 1: Pilih Kategori -->
+      <div id="halamanKategori">
+        <h1>📘 PENGUKURAN KAYU</h1>
+        <h2>Pilih Kategori</h2>
+        <div class="btn-group">
+          <button onclick="pilihKategori('SUPER')">SUPER</button>
+          <button onclick="pilihKategori('REJECT')">REJECT</button>
+        </div>
       </div>
-      <div id="rekap130" class="rekap-box"></div> -->
-         </div>
-
-         <div class="summary">
-            <p>Total Kayu: <span id="totalKayu">0</span> batang</p>
-            <p>Total Volume: <span id="totalVolume">0.000</span> m³</p>
-         </div>
-
-         <div class="buttons">
-            <button onclick="resetData()">🔄 Reset</button>
-            <button onclick="exportCSV()">💾 Simpan CSV</button>
-         </div>
+      <!-- Halaman 2: Pilih Ukuran -->
+      <div class="hidden" id="halamanUkuran">
+        <h2>Pilih Ukuran Kayu</h2>
+        <div class="btn-group">
+          <button onclick="pilihUkuran(100)">100</button>
+          <button onclick="pilihUkuran(130)">130</button>
+          <button onclick="pilihUkuran(200)">200</button>
+          <button onclick="pilihUkuran(260)">260</button>
+        </div>
+        <div class="btn-group">
+          <button
+            class="btn-kembali"
+            onclick="tampilkanHalaman('halamanKategori')"
+          >
+            ⬅️ Kembali
+          </button>
+          <button onclick="resetData()" class="reset-button">
+            Reset Semua Data
+          </button>
+        </div>
       </div>
+      <!-- Halaman 3: Input Diameter -->
+      <div class="hidden" id="halamanInput">
+        <h2 id="judulInput">Input Diameter</h2>
+        <div class="btn-group" id="presetTombol"></div>
+        <div class="btn-group">
+          <button onclick="simpanData()">💾 Save</button>
+          <button
+            class="btn-kembali"
+            onclick="tampilkanHalaman('halamanUkuran')"
+          >
+            ⬅️ Kembali
+          </button>
+          <button onclick="resetData()" class="reset-button">
+            Reset Semua Data
+          </button>
+        </div>
+      </div>
+      <!-- Halaman 4: Ringkasan -->
+      <div class="hidden" id="halamanRingkasan">
+        <h2>Ringkasan Data</h2>
+        <div id="tabelData"></div>
+        <div class="btn-group">
+          <button onclick="downloadCSV()">📥 Export CSV</button>
+          <button
+            class="btn-kembali"
+            onclick="tampilkanHalaman('halamanUkuran')"
+          >
+            ⬅️ Kembali
+          </button>
+          <button onclick="resetData()" class="reset-button">
+            Reset Semua Data
+          </button>
+        </div>
+      </div>
+    </div>
 
-      <script src="app.js"></script>
-   </body>
+    <script src="app.js"></script>
+  </body>
 </html>

@@ -1,47 +1,77 @@
 body {
   font-family: Arial, sans-serif;
-  padding: 20px;
   background: #f2f2f2;
+  padding: 20px;
 }
-
 .container {
+  max-width: 900px;
+  margin: auto;
   background: white;
   padding: 20px;
-  border-radius: 10px;
-  max-width: 800px;
-  margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.input-section input {
-  padding: 10px;
-  margin: 5px;
-  width: 120px;
+.hidden {
+  display: none;
 }
-
-.input-section button {
-  padding: 10px;
-  margin-top: 5px;
+h1,
+h2 {
+  text-align: center;
 }
-
+.btn-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+button {
+  padding: 15px 25px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #2b7efc;
+  color: white;
+}
+button:hover {
+  background: #1a5dc3;
+}
+.btn-kembali {
+  background: #aaa;
+}
+.preset-button {
+  background: #e3e3e3;
+  color: black;
+  border: 1px solid #ccc;
+}
+.preset-button:hover {
+  background: #ccc;
+}
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 20px;
 }
-
-th, td {
+th,
+td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
 }
-
-.summary {
-  margin-top: 20px;
-  font-size: 1.1em;
+th {
+  background: #f0f0f0;
 }
-
-.buttons button {
-  padding: 10px 20px;
-  margin: 10px 5px;
+.reset-button {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.reset-button:hover {
+  background-color: #c82333;
 }
