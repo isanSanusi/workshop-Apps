@@ -120,8 +120,45 @@ function tambahData(kategori, subkategori, diameter, volume) {
 }
 
 function simpanData() {
-  alert("Data disimpan.");
-  tampilkanHalaman("halamanRingkasan");
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  const waktu = new Date().toISOString();
+
+  const dataBaru = {
+    oleh: user?.username || "anonim",
+    waktu,
+    data: [...dataTercatat], // copy semua inputan
+  };
+
+  // Ambil data sebelumnya dari localStorage
+  const dataSebelumnya =
+    JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
+
+  // Tambahkan data baru ke list
+  dataSebelumnya.push(dataBaru);
+
+  // Simpan kembali
+  localStorage.setItem("kayu_terkirim", JSON.stringify(dataSebelumnya));
+
+  // Reset tampilan dan input
+  dataTercatat = [];
+  jumlahPerKategori = {
+    SUPER: {
+      100: {},
+      130: {},
+      200: {},
+      260: {},
+      standard: {},
+    },
+    REJECT: {
+      100: {},
+      130: {},
+      200: {},
+      260: {},
+    },
+  };
+  generatePreset();
+
+  alert("Data berhasil disimpan dan dikirim ke admin!");
 }
 
 function resetData() {

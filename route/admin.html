@@ -1,32 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Page</title>
-    <link rel="stylesheet" href="../style/styles.css">
-</head>
-<body>
-    <div class="" id="halamanRingkasan">
-        <h2>Ringkasan Data</h2>
-        <div id="tabelData"></div>
-        <div class="btn-group">
-          <button onclick="downloadCSV()">📥 Export CSV</button>
-          <button
-            class="btn-kembali"
-            onclick="tampilkanHalaman('halamanUkuran')"
-          >
-            ⬅️ Back
-          </button>
-          <button onclick="resetData()" class="reset-button">
-            Reset Semua Data
-          </button>
-        </div>
-        <button onclick="logout()">Logout</button>
-      </div>
-    </div>
+    <link rel="stylesheet" href="../style/styles.css" />
+  </head>
+  <body>
+    <h2>Rekap Data Kayu</h2>
+
+    <!-- Input Harga per m³ -->
+    <section id="formHarga">
+      <h3>Atur Harga per m³</h3>
+      <form id="hargaForm">
+        <label>
+          Kategori:
+          <select id="kategoriHarga">
+            <option value="SUPER">SUPER</option>
+            <option value="REJECT">REJECT</option>
+          </select>
+        </label>
+        <label>
+          Ukuran:
+          <select id="ukuranHarga">
+            <option>100</option>
+            <option>130</option>
+            <option>200</option>
+            <option>260</option>
+            <option>Standard</option>
+          </select>
+        </label>
+        <label>
+          Harga/m³:
+          <input
+            type="number"
+            id="inputHargaPerM3"
+            placeholder="contoh: 350000"
+          />
+        </label>
+        <button type="submit">Simpan Harga</button>
+      </form>
+    </section>
+
+    <!-- Tabel Rekap -->
+    <section id="rekapContainer">
+      <h3>Data Terkirim</h3>
+      <div id="tabelRekap"></div>
+    </section>
+
+    <!-- Total Keseluruhan -->
+    <section>
+      <h3>Total Harga Keseluruhan: <span id="totalSemuaHarga">Rp 0</span></h3>
+    </section>
+
+    <button onclick="logout()">Logout</button>
 
     <script src="../js/auth.js"></script>
     <script src="../js/admin.js"></script>
-</body>
+  </body>
 </html>
