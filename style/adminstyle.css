@@ -1,0 +1,124 @@
+/* ====== Admin Dashboard Style ====== */
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+h2,
+h3 {
+  color: #2c3e50;
+  margin-top: 0;
+}
+
+section {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ====== Table Style ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #34495e;
+  color: white;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* ====== Buttons ====== */
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Action buttons inside table */
+td button {
+  margin: 0 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+/* Form input */
+input[type="number"],
+select {
+  padding: 8px;
+  margin: 0 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 150px;
+}
+
+form label {
+  display: inline-block;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+form button {
+  background-color: #27ae60;
+}
+
+form button:hover {
+  background-color: #1e8449;
+}
+
+/* Total Harga */
+#totalSemuaHarga {
+  font-weight: bold;
+  font-size: 18px;
+  color: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 8px 4px;
+  }
+
+  input[type="number"],
+  select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  form label {
+    display: block;
+    margin-bottom: 6px;
+  }
+}

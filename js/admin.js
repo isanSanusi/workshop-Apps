@@ -30,7 +30,7 @@ function rekapData() {
 
 function renderTabel() {
   let html =
-    "<table><tr><th>Kategori</th><th>Ukuran</th><th>Diameter</th><th>Volume</th><th>Jumlah</th><th>Total Volume</th><th>Harga/m³</th><th>Total Harga</th><th>Aksi</th></tr>";
+    "<table><tr><th>Kategori</th><th>Ukuran</th><th>Diameter</th><th>Volume</th><th>Jumlah</th><th>Total Volume</th><th>Harga/m³</th><th>Total Harga</th></tr>";
   let totalKeseluruhan = 0;
 
   Object.values(dataRekapGabungan).forEach((row, idx) => {
@@ -55,7 +55,6 @@ function renderTabel() {
         <td id="totalVol-${idx}">${totalVol.toFixed(2)}</td>
         <td>Rp ${harga.toLocaleString()}</td>
         <td id="totalHarga-${idx}">Rp ${totalHarga.toLocaleString()}</td>
-        <td></td>
       </tr>
     `;
   });
