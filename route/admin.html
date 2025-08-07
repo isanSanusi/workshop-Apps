@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="../style/styles.css">
+</head>
+<body>
+    <div class="" id="halamanRingkasan">
+        <h2>Ringkasan Data</h2>
+        <div id="tabelData"></div>
+        <div class="btn-group">
+          <button onclick="downloadCSV()">📥 Export CSV</button>
+          <button
+            class="btn-kembali"
+            onclick="tampilkanHalaman('halamanUkuran')"
+          >
+            ⬅️ Back
+          </button>
+          <button onclick="resetData()" class="reset-button">
+            Reset Semua Data
+          </button>
+        </div>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

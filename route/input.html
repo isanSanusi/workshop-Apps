@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>input data Kayu</title>
+    <link rel="stylesheet" href="../style/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Halaman 1: Pilih Kategori -->
+      <div id="halamanKategori">
+        <div class="jumbotron">
+          <h1>📘 WAREHOUSE APPS V.1.0</h1>
+        </div>
+        <h2>Choose Category</h2>
+        <div class="btn-group category">
+          <button class="super" onclick="pilihKategori('SUPER')">SUPER</button>
+          <button class="reject" onclick="pilihKategori('REJECT')">
+            REJECT
+          </button>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+      <!-- Halaman 2: Pilih Ukuran -->
+      <div class="hidden" id="halamanUkuran">
+        <h2>Wood Size</h2>
+        <div class="btn-group">
+          <button onclick="pilihUkuran(100)">100cm</button>
+          <button onclick="pilihUkuran(130)">130cm</button>
+          <button onclick="pilihUkuran(200)">200cm</button>
+          <button onclick="pilihUkuran(260)">260cm</button>
+          <button onclick="pilihUkuran('standard')">Standard</button>
+        </div>
+        <!-- Halaman 3: Input Diameter -->
+        <div class="" id="halamanInput">
+          <h2 id="judulInput">Choose wood size</h2>
+          <div class="btn-group" id="presetTombol"></div>
+        </div>
+        <div class="fixed-footer">
+          <button onclick="simpanData()">💾 Save</button>
+          <button
+            class="btn-kembali"
+            onclick="tampilkanHalaman('halamanKategori')"
+          >
+            ⬅️ Back
+          </button>
+          <button onclick="resetData()" class="reset-button">
+            Reset All Data
+          </button>
+        </div>
+      </div>
+      
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/input.js"></script>
+    <script src="../js/export.js"></script>
+  </body>
+</html>

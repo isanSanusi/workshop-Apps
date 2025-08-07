@@ -1,73 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pengukuran Kayu</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Page awal</title>
   </head>
   <body>
-    <div class="container">
-      <!-- Halaman 1: Pilih Kategori -->
-      <div id="halamanKategori">
-        <div class="jumbotron">
-          <h1>📘 WAREHOUSE APPS V.1.0</h1>
-        </div>
-        <h2>Choose Category</h2>
-        <div class="btn-group category">
-          <button class="super" onclick="pilihKategori('SUPER')">SUPER</button>
-          <button class="reject" onclick="pilihKategori('REJECT')">
-            REJECT
-          </button>
-        </div>
-      </div>
-      <!-- Halaman 2: Pilih Ukuran -->
-      <div class="hidden" id="halamanUkuran">
-        <h2>Wood Size</h2>
-        <div class="btn-group">
-          <button onclick="pilihUkuran(100)">100km</button>
-          <button onclick="pilihUkuran(130)">130km</button>
-          <button onclick="pilihUkuran(200)">200km</button>
-          <button onclick="pilihUkuran(260)">260km</button>
-        </div>
-        <!-- Halaman 3: Input Diameter -->
-        <div class="" id="halamanInput">
-          <h2 id="judulInput">Choose wood size</h2>
-          <div class="btn-group" id="presetTombol"></div>
-        </div>
-        <div class="btn-group">
-          <button onclick="simpanData()">💾 Save</button>
-          <button
-            class="btn-kembali"
-            onclick="tampilkanHalaman('halamanKategori')"
-          >
-            ⬅️ Back
-          </button>
-          <button onclick="resetData()" class="reset-button">
-            Reset All Data
-          </button>
-        </div>
-      </div>
-
-      <!-- Halaman 4: Ringkasan -->
-      <div class="hidden" id="halamanRingkasan">
-        <h2>Ringkasan Data</h2>
-        <div id="tabelData"></div>
-        <div class="btn-group">
-          <button onclick="downloadCSV()">📥 Export CSV</button>
-          <button
-            class="btn-kembali"
-            onclick="tampilkanHalaman('halamanUkuran')"
-          >
-            ⬅️ Back
-          </button>
-          <button onclick="resetData()" class="reset-button">
-            Reset Semua Data
-          </button>
-        </div>
-      </div>
+    <div>
+      <p>Hello world</p>
+      <a href="./login.html">Masuk sini</a>
     </div>
-
-    <script src="app.js"></script>
   </body>
 </html>

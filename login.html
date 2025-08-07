@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="./style/styles.css" />
+  </head>
+  <body>
+    <div id="loginPage" class="container">
+      <h2>
+        Login
+        <div class="note">
+          <p>untuk lapangan username :lapangan1 ,pass: 123</p>
+          <p>untuk admin username: admin1 , pass: admin</p>
+        </div>
+      </h2>
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <label for="username">Username</label>
+        <input type="text" id="username" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+
+        <button type="submit">Login</button>
+        <p id="loginError" style="color: red; margin-top: 10px"></p>
+      </form>
+    </div>
+
+    <script src="./js/auth.js"></script>
+  </body>
+</html>

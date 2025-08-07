@@ -1,0 +1,264 @@
+/* =============== GLOBAL RESET =============== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f9f9f9;
+  color: #333;
+  padding-bottom: 80px; /* for fixed footer space */
+}
+
+.container {
+  max-width: 960px;
+  margin: auto;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.hidden {
+  display: none;
+}
+
+.jumbotron {
+  width: 100%;
+  height: 220px;
+  background-color: #007f5f;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+h1,
+h2 {
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+/* ==============LOGIN PAGE ================ */
+.note {
+  color: black;
+  width: 100%;
+}
+
+.note p {
+  font-size: 1rem;
+}
+#loginPage {
+  max-width: 400px;
+  margin-top: 60px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+#loginPage input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#loginPage button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #2b7efc;
+  color: white;
+  cursor: pointer;
+}
+
+/* =============== BUTTONS =============== */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background: #2b7efc;
+  color: white;
+}
+
+button:hover {
+  background: #1a5dc3;
+}
+
+button:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.super {
+  font-size: 2rem;
+  background-color: #007bff;
+}
+
+.reject {
+  font-size: 2rem;
+  background-color: #dc3545;
+}
+
+.btn-kembali {
+  background: teal;
+}
+
+.reset-button {
+  background-color: #dc3545;
+}
+
+.reset-button:hover {
+  background-color: #c82333;
+}
+
+/* =============== PRESET BUTTONS =============== */
+.preset-button {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 80px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #1a5dc3;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s ease-in-out;
+}
+
+.preset-button:hover {
+  background-color: teal;
+}
+
+.preset-button .dia {
+  font-size: 1.1rem;
+  padding-bottom: 4px;
+}
+
+.preset-button .volume-jumlah {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 0.85rem;
+
+  background-color: #2b7efc;
+}
+
+.preset-button .volume-jumlah span:nth-child(2) {
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+}
+
+/* =============== FIXED FOOTER BUTTONS =============== */
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  gap: 10px;
+}
+
+.fixed-footer button {
+  flex: 1;
+  max-width: 180px;
+}
+
+/* =============== TABLE =============== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  font-size: 0.95rem;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background: #e9ecef;
+}
+
+/* =============== RESPONSIVE DESIGN =============== */
+@media (max-width: 600px) {
+  .btn-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  button {
+    font-size: 1rem;
+    width: 100%;
+    max-width: 180px;
+  }
+
+  .preset-button {
+    width: 18%;
+    min-width: 60px;
+    max-width: 90px;
+    font-size: 0.9rem;
+  }
+
+  .preset-button .volume-jumlah {
+    font-size: 0.75rem;
+  }
+
+  .jumbotron {
+    height: 180px;
+    font-size: 1.5rem;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+}
