@@ -14,7 +14,7 @@ function handleLogin(event) {
   );
 
   if (!user) {
-    if (errorEl) errorEl.textContent = "Username atau password salah.";
+    if (errorEl) errorEl.textContent = "Maneh saha ? naha aweuh di database.";
     return false;
   }
 
