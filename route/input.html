@@ -14,40 +14,46 @@
           <h1>📘 WAREHOUSE APPS V.1.0</h1>
         </div>
         <h2>Choose Category</h2>
-        <div class="btn-group category">
+        <div class="btn-cat category">
           <button class="super" onclick="pilihKategori('SUPER')">SUPER</button>
           <button class="reject" onclick="pilihKategori('REJECT')">
             REJECT
           </button>
+          <div class="tableData"></div>
           <button onclick="logout()">Logout</button>
         </div>
       </div>
       <!-- Halaman 2: Pilih Ukuran -->
-      <div class="hidden" id="halamanUkuran">
-        <h2>Wood Size</h2>
-        <div class="btn-group">
+      <div class="hidden" id="halamanInput">
+        <div class="btn-subcat">
           <button onclick="pilihUkuran(100)">100cm</button>
           <button onclick="pilihUkuran(130)">130cm</button>
           <button onclick="pilihUkuran(200)">200cm</button>
           <button onclick="pilihUkuran(260)">260cm</button>
-          <button onclick="pilihUkuran('standard')">Standard</button>
+          <button onclick="pilihUkuran('standard')">standard</button>
         </div>
         <!-- Halaman 3: Input Diameter -->
-        <div class="" id="halamanInput">
-          <h2 id="judulInput">Choose wood size</h2>
-          <div class="btn-group" id="presetTombol"></div>
+        <div class="" id="halamanPreset">
+          <div class="wraper-btn-subcat">
+            <h2 class="heading-input" id="judulInput"></h2>
+            <h2 id="kategori-input"></h2>
+            <h2 class="totalKayu-input" id="totalKayuKategori"></h2>
+          </div>
+          <div class="btn-preset" id="presetTombol"></div>
         </div>
         <div class="fixed-footer">
-          <button onclick="simpanData()">💾 Save</button>
-          <button
-            class="btn-kembali"
-            onclick="tampilkanHalaman('halamanKategori')"
-          >
-            ⬅️ Back
-          </button>
-          <button onclick="resetData()" class="reset-button">
-            Reset All Data
-          </button>
+          <div class="btn-opsi">
+            <button onclick="simpanData()">💾 Save</button>
+            <button onclick="resetData()" class="reset-button">
+              Reset
+            </button>
+            <button
+              class="btn-kembali"
+              onclick="onBack()"
+            >
+              ⬅️ Back
+            </button>
+          </div>
         </div>
       </div>
       

@@ -2,12 +2,27 @@
 let semuaData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
 let hargaPerM3 = JSON.parse(localStorage.getItem("harga_per_m3")) || {};
 let dataRekapGabungan = {};
+let dataRincian = {};
 let tabelContainer = document.getElementById("tabelRekap");
 let totalHargaEl = document.getElementById("totalSemuaHarga");
 
 // Gabungkan data menjadi rekap per kategori-ukuran-diameter
+
 function rekapData() {
   dataRekapGabungan = {};
+
+  dataRincian = {};
+  semuaData.forEach((datas) => {
+    dataRincian["Sender"] = datas.oleh;
+    dataRincian["Date"] = datas.waktu;
+    let details = datas.data;
+    details.forEach((detail) => {
+      dataRincian["Category"] = detail.kategori;
+      dataRincian["Volume"] = detail.volume;
+      dataRincian["Total"] = detail.jumlah;
+    });
+    console.log(dataRincian);
+  });
 
   semuaData.forEach((entry) => {
     entry.data.forEach((item) => {
@@ -29,30 +44,28 @@ function rekapData() {
 }
 
 function renderTabel() {
-  let html =
-    "<table><tr><th>Kategori</th><th>Ukuran</th><th>Diameter</th><th>Volume</th><th>Jumlah</th><th>Total Volume</th><th>Harga/m³</th><th>Total Harga</th></tr>";
   let totalKeseluruhan = 0;
+  let html =
+    "<table><tr><th>Kategori</th><th>Ukuran</th><th>Diameter</th><th>Volume</th><th>Total Volume</th><th>Jumlah</th><th>Harga/m³</th><th>Total Harga</th></tr>";
 
   Object.values(dataRekapGabungan).forEach((row, idx) => {
     const keyHarga = `${row.kategori}-${row.ukuran}`;
     const harga = hargaPerM3[keyHarga] || 0;
     const totalVol = row.volume * row.jumlah;
     const totalHarga = totalVol * harga;
-
     totalKeseluruhan += totalHarga;
-
     html += `
       <tr>
         <td>${row.kategori}</td>
         <td>${row.ukuran}</td>
         <td>${row.diameter}</td>
-        <td>${row.volume}</td>
+        <td>${row.volume}m<sup>3</td>
+        <td id="totalVol-${idx}">${totalVol.toFixed(2)}m<sup>3</td>
         <td>
           <button onclick="ubahJumlah('${idx}', -1)">➖</button>
           <span id="jumlah-${idx}">${row.jumlah}</span>
           <button onclick="ubahJumlah('${idx}', 1)">➕</button>
         </td>
-        <td id="totalVol-${idx}">${totalVol.toFixed(2)}</td>
         <td>Rp ${harga.toLocaleString()}</td>
         <td id="totalHarga-${idx}">Rp ${totalHarga.toLocaleString()}</td>
       </tr>

@@ -18,6 +18,47 @@ let jumlahPerKategori = {
   },
 };
 
+function hitungKayu() {
+  const jumlahPerDiameter =
+    jumlahPerKategori[kategoriTerpilih][subkategoriTerpilih];
+
+  const totalKayu = Object.values(jumlahPerDiameter).reduce(
+    (sum, val) => sum + val,
+    0
+  );
+
+  document.getElementById("judulInput").innerHTML = `
+    <span>Ukuran ${subkategoriTerpilih}</span>
+    <span>${totalKayu}</span>`;
+}
+
+function updateTotalKayuKategori() {
+  const kategoriData = jumlahPerKategori[kategoriTerpilih];
+  let total = 0;
+
+  for (const sub in kategoriData) {
+    const jumlahPerDiameter = kategoriData[sub];
+    total += Object.values(jumlahPerDiameter).reduce(
+      (sum, val) => sum + val,
+      0
+    );
+  }
+
+  // Tampilkan ke layar
+  const el = document.getElementById("totalKayuKategori");
+  if (el) {
+    el.innerHTML = `<span>Total Kayu</span><span>${total}</span>`;
+  }
+}
+
+// Param dari tombol kat = SUPER/REJECT
+function pilihKategori(kat) {
+  kategoriTerpilih = kat;
+  document.getElementById("kategori-input").innerHTML = `
+    <span>${kategoriTerpilih}</span>`;
+  tampilkanHalaman("halamanInput");
+}
+
 function tampilkanHalaman(id) {
   document
     .querySelectorAll(".container > div")
@@ -26,16 +67,26 @@ function tampilkanHalaman(id) {
   if (id === "halamanRingkasan") tampilkanTabel();
 }
 
-function pilihKategori(kat) {
-  kategoriTerpilih = kat;
-  tampilkanHalaman("halamanUkuran");
-}
-
 function pilihUkuran(subkat) {
+  // 1. Dapatkan semua tombol subkategori
+  const buttons = document.querySelectorAll(".btn-subcat button");
+  // 2. Hapus class 'active' dari semua tombol
+  buttons.forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  // 3. Temukan tombol yang diklik dan tambahkan class 'active'
+  buttons.forEach((btn) => {
+    if (
+      btn.textContent === subkat + "cm" ||
+      (subkat === "standard" && btn.textContent === "standard")
+    ) {
+      btn.classList.add("active");
+    }
+  });
   subkategoriTerpilih = subkat;
-  document.getElementById(
-    "judulInput"
-  ).innerText = `CATEGORY: ${kategoriTerpilih} - SIZE: ${subkat}`;
+  hitungKayu();
+  updateTotalKayuKategori();
   generatePreset(kategoriTerpilih, subkat);
 }
 
@@ -51,7 +102,7 @@ function generatePreset(kategori, subkategori) {
   container.innerHTML = "";
 
   let min = 9,
-    max = 80;
+    max = 55;
   if (subkategori === 200) {
     min = 20;
     max = kategori === "SUPER" ? 80 : 80;
@@ -62,14 +113,15 @@ function generatePreset(kategori, subkategori) {
   }
   if (subkategori === "standard") {
     min = 15;
-    max = 80;
+    max = 55;
   }
 
   const jumlahPerDiameter = jumlahPerKategori[kategori][subkategori];
 
   for (let d = min; d <= max; d++) {
     jumlahPerDiameter[d] = jumlahPerDiameter[d] || 0;
-    const volume = hitungVolumeLiter(parseInt(subkategori), d);
+    const panjang = subkategori === "standard" ? 130 : parseInt(subkategori);
+    const volume = hitungVolumeLiter(panjang, d);
 
     const btn = document.createElement("button");
     btn.className = "preset-button";
@@ -83,6 +135,8 @@ function generatePreset(kategori, subkategori) {
 
     btn.onclick = () => {
       jumlahPerDiameter[d]++;
+      hitungKayu();
+      updateTotalKayuKategori();
       document.getElementById(
         `btn-${kategori}-${subkategori}-${d}`
       ).innerHTML = `
@@ -119,7 +173,28 @@ function tambahData(kategori, subkategori, diameter, volume) {
   }
 }
 
+function onBack() {
+  const container = document.getElementById("presetTombol");
+  document.getElementById("judulInput").innerHTML = `
+    <span>Ukuran</span>
+    <span></span>`;
+  const el = document.getElementById("totalKayuKategori");
+  if (el) {
+    el.innerHTML = `<span>Total Kayu</span><span></span>`;
+  }
+  const buttons = document.querySelectorAll(".btn-subcat button");
+  buttons.forEach((btn) => {
+    btn.classList.remove("active");
+  });
+  container.innerHTML = "";
+  tampilkanHalaman("halamanKategori");
+}
+
 function simpanData() {
+  if (dataTercatat.length === 0) {
+    alert("Belum ada data yang dimasukkan.");
+    return;
+  }
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
   const waktu = new Date().toISOString();
 
@@ -156,9 +231,10 @@ function simpanData() {
       260: {},
     },
   };
-  generatePreset();
 
+  generatePreset(kategoriTerpilih, subkategoriTerpilih);
   alert("Data berhasil disimpan dan dikirim ke admin!");
+  onBack();
 }
 
 function resetData() {
@@ -168,7 +244,9 @@ function resetData() {
     SUPER: { 100: {}, 130: {}, 200: {}, 260: {}, standard: {} },
     REJECT: { 100: {}, 130: {}, 200: {}, 260: {} },
   };
-  document.getElementById("tabelData").innerHTML = "";
+  // document.getElementById("tabelData").innerHTML = "";
+
   generatePreset(kategoriTerpilih, subkategoriTerpilih);
   alert("Data berhasil direset.");
+  onBack();
 }

@@ -46,6 +46,32 @@ h2 {
   margin-bottom: 16px;
 }
 
+.wraper-btn-subcat {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.wraper-btn-subcat span {
+  font-size: 0.8rem;
+}
+
+.heading-input,
+.totalKayu-input {
+  background-color: #007bff;
+  margin: 0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.heading-input span:nth-child(2),
+.totalKayu-input span:nth-child(2) {
+  font-size: 1rem;
+}
+
 /* ==============LOGIN PAGE ================ */
 .note {
   color: black;
@@ -85,27 +111,19 @@ h2 {
 }
 
 /* =============== BUTTONS =============== */
-.btn-group {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 20px;
-}
 
 button {
-  padding: 12px 20px;
-  font-size: 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background: #2b7efc;
   color: white;
+  background-color: #dc3545;
 }
 
 button:hover {
   background: #1a5dc3;
+  color: white;
 }
 
 button:active {
@@ -113,13 +131,64 @@ button:active {
   opacity: 0.9;
 }
 
-.super {
+/* Style saat tombol aktif */
+.btn-subcat button.active {
+  background-color: #2b7efc; /* Warna hijau */
+  color: white;
+  border-color: #45a049;
+  font-weight: bold;
+}
+
+.btn-cat {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-subcat {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-cat button,
+.btn-subcat button {
+  width: 100%;
+  padding: 20px;
   font-size: 2rem;
+}
+
+.btn-subcat button {
+  font-size: 1rem;
+  width: 15%;
+  color: #636262;
+  background-color: transparent;
+}
+
+.btn-subcat button:hover {
+  color: white;
+  background-color: #1a5dc3;
+}
+
+.btn-opsi {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #007bff;
+}
+.btn-opsi button {
+  padding: 15px;
+  background-color: transparent;
+  font-size: 1rem;
+}
+
+.super {
   background-color: #007bff;
 }
 
 .reject {
-  font-size: 2rem;
   background-color: #dc3545;
 }
 
@@ -136,6 +205,14 @@ button:active {
 }
 
 /* =============== PRESET BUTTONS =============== */
+.btn-preset {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
 .preset-button {
   padding: 0;
   display: flex;
@@ -172,7 +249,6 @@ button:active {
   width: 100%;
   padding: 4px 6px;
   font-size: 0.85rem;
-
   background-color: #2b7efc;
 }
 
@@ -188,14 +264,16 @@ button:active {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #ffffff;
+  height: 10vh;
+  background: #007bff;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px 20px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
   gap: 10px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
 .fixed-footer button {
@@ -224,33 +302,103 @@ th {
 
 /* =============== RESPONSIVE DESIGN =============== */
 @media (max-width: 600px) {
-  .btn-group {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .container {
+    margin: 0;
+    padding: 15px;
+  }
+
+  .btn-cat {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 12px;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .btn-subcat {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 0.5rem;
+    padding: 0px;
+    border-radius: 2px;
+    gap: 0;
+  }
+
+  .btn-subcat button {
+    width: 20%;
+    font-size: 0.8rem;
+    text-align: center;
+    padding-inline: 5px;
+    border-radius: 2px;
+    border-block: 1px solid rgb(47, 0, 255);
   }
 
   button {
-    font-size: 1rem;
-    width: 100%;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    width: 15%;
     max-width: 180px;
   }
 
+  .btn-preset {
+    gap: 3px;
+  }
+
   .preset-button {
-    width: 18%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    font-size: 0.5rem;
+    font-weight: bold;
+    border-radius: 2px;
+    background-color: #1a5dc3;
+  }
+
+  .preset-button {
+    width: 10%;
     min-width: 60px;
     max-width: 90px;
-    font-size: 0.9rem;
+  }
+
+  .preset-button .dia {
+    font-size: 0.8rem;
   }
 
   .preset-button .volume-jumlah {
-    font-size: 0.75rem;
+    font-size: 0.5rem;
+    padding: 0 0 0 3px;
+  }
+
+  .preset-button .volume-jumlah span:nth-child(2) {
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+    padding: 5px 2px;
+  }
+
+  .heading-input {
+    font-size: 0.8rem;
+    gap: 2px;
   }
 
   .jumbotron {
     height: 180px;
     font-size: 1.5rem;
+  }
+
+  .fixed-footer {
+    height: 5vh;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+  }
+
+  .fixed-footer button {
+    font-size: 0.8rem;
   }
 
   h1,
