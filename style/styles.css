@@ -11,9 +11,6 @@ body {
    font-family: "Open Sans", sans-serif;
    background: linear-gradient(135deg, #00c6ff, #ff00b5);
    height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
    padding-bottom: 80px; /* for fixed footer space */
 }
 

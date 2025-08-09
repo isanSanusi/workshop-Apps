@@ -55,8 +55,28 @@ function updateTotalKayuKategori() {
 // Param dari tombol kat = SUPER/REJECT
 function pilihKategori(kat) {
    kategoriTerpilih = kat;
-   document.getElementById("kategori-input").innerHTML = `
-    <span>${kategoriTerpilih}</span>`;
+   document.getElementById(
+      "kategori-input"
+   ).innerHTML = `<span>${kategoriTerpilih}</span>`;
+
+   // Tentukan subkategori yang boleh ditampilkan
+   let subkategoriList = [];
+   if (kat === "SUPER") {
+      subkategoriList = [100, 130, 200, 260];
+   } else if (kat === "STANDARD" || kat === "REJECT") {
+      subkategoriList = [100, 130]; // dibatasi hanya ini
+   }
+
+   // Generate tombol subkategori sesuai daftar
+   const container = document.querySelector(".btn-subcat");
+   container.innerHTML = "";
+   subkategoriList.forEach((sub) => {
+      const btn = document.createElement("button");
+      btn.textContent = sub + "cm";
+      btn.onclick = () => pilihUkuran(sub);
+      container.appendChild(btn);
+   });
+
    tampilkanHalaman("halamanInput");
 }
 
@@ -104,11 +124,7 @@ function generatePreset(kategori, subkategori) {
 
    let min = 9,
       max = 55;
-   if (subkategori === 200) {
-      min = 20;
-      max = 80;
-   }
-   if (subkategori === 260) {
+   if (subkategori === 200 || subkategori === 260) {
       min = 20;
       max = 80;
    }

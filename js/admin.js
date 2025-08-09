@@ -4,21 +4,14 @@ let hargaPerKelompok =
    JSON.parse(localStorage.getItem("harga_per_kelompok")) || {};
 let tabelContainer = document.getElementById("tabelRekap");
 
-// ==================== STRUKTUR HARGA DASAR ====================
+/// ==================== STRUKTUR HARGA DASAR ====================
 const strukturHarga = {
+   standardReject: ["9", "10-14", "15-up"],
    super: {
-      100: ["20-24", "25 up"],
-      130: ["15-19", "20-24", "25-29", "30 up"],
-      200: ["25-29", "30-39", "40-49", "50 up"],
-      260: ["25-29", "30-39", "40 up"],
-   },
-   standard: {
-      100: ["9", "10-14", "15 up"],
-      130: ["9", "10-14", "15 up"],
-   },
-   reject: {
-      100: ["9", "10-14", "15 up"],
-      130: ["9", "10-14", "15 up"],
+      100: ["20-24", "25-up"],
+      130: ["15-19", "20-24", "25-29", "30-up"],
+      200: ["25-29", "30-39", "40-49", "50-up"],
+      260: ["25-29", "30-39", "40-up"],
    },
 };
 
@@ -99,52 +92,66 @@ function bukaModalHarga(index) {
    if (!data) return alert("Data tidak ditemukan");
 
    let modalHTML = `
-    <div id="modalHarga" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0008;display:flex;justify-content:center;align-items:center;z-index:9999;">
-        <div style="background:white;padding:20px;border-radius:8px;max-height:90%;overflow:auto;width:500px;">
-            <h3>Input Harga /m³</h3>
-            <form id="formHarga">
-    `;
+   <div id="modalHarga" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0008;display:flex;justify-content:center;align-items:center;z-index:9999;">
+       <div style="background:white;padding:20px;border-radius:8px;max-height:90%;overflow:auto;width:500px;">
+           <h3>Input Harga /m³</h3>
+           <form id="formHarga">
+   `;
 
-   // Buat input harga per kelompok yang ada di transaksi ini
-   let kategoriDipakai = [
-      ...new Set(data.data.map((d) => d.kategori.toLowerCase())),
+   // Gabungkan kategori standard + reject jadi satu (3 input harga saja)
+   const adaStandardReject = data.data.some((d) =>
+      ["standard", "reject"].includes(d.kategori.toLowerCase())
+   );
+   if (adaStandardReject) {
+      modalHTML += `<h4>Kategori: STANDARD & REJECT (100 & 130)</h4>`;
+      ["9", "10-14", "15 up"].forEach((kelompok) => {
+         const key = `standardReject-${kelompok}`;
+         const nilaiAwal = hargaPerKelompok[key] || "";
+         modalHTML += `
+               <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px;">
+                  <div style="flex:1;">${kelompok}</div>
+                  <input type="number" name="${key}" value="${nilaiAwal}"style="width:120px;padding:5px;">
+               </div>
+            `;
+      });
+   }
+
+   // Kategori super tetap seperti struktur harga
+   const kategoriSuper = [
+      { ukuran: "100", kelompok: ["20-24", "25 up"] },
+      { ukuran: "130", kelompok: ["15-19", "20-24", "25-29", "30 up"] },
+      { ukuran: "200", kelompok: ["25-29", "30-39", "40-49", "50 up"] },
+      { ukuran: "260", kelompok: ["25-29", "30-39", "40 up"] },
    ];
 
-   kategoriDipakai.forEach((kat) => {
-      const ukuranDipakai = [
-         ...new Set(
-            data.data
-               .filter((d) => d.kategori.toLowerCase() === kat)
-               .map((d) => d.ukuran)
-         ),
-      ];
-
-      modalHTML += `<h4 style="margin-top:15px;">Kategori: ${kat.toUpperCase()}</h4>`;
-
-      ukuranDipakai.forEach((uk) => {
-         if (!strukturHarga[kat] || !strukturHarga[kat][uk]) return;
-
-         modalHTML += `<strong>Ukuran: ${uk}</strong><br>`;
-         strukturHarga[kat][uk].forEach((kelompok) => {
-            const key = `${kat}-${uk}-${kelompok}`;
+   kategoriSuper.forEach((s) => {
+      const adaUkuranIni = data.data.some(
+         (d) => d.kategori.toLowerCase() === "super" && d.ukuran == s.ukuran
+      );
+      if (adaUkuranIni) {
+         modalHTML += `<h4>Kategori: SUPER ${s.ukuran}cm</h4>`;
+         s.kelompok.forEach((kelompok) => {
+            const key = `super-${s.ukuran}-${kelompok}`;
             const nilaiAwal = hargaPerKelompok[key] || "";
             modalHTML += `
-                    <label>${kelompok} :</label>
-                    <input type="number" name="${key}" value="${nilaiAwal}" style="width:100%;margin-bottom:5px;">
-                `;
+               <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px;">
+                  <div style="flex:1;">${kelompok}</div>
+                  <input type="number" name="${key}" value="${nilaiAwal}"style="width:120px;padding:5px;">
+               </div>
+            `;
          });
-      });
+      }
    });
 
    modalHTML += `
-                <div style="margin-top:10px;text-align:right;">
-                    <button type="button" onclick="tutupModal()">Batal</button>
-                    <button type="submit">Simpan & Cetak</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    `;
+               <div style="margin-top:10px;text-align:right;">
+                   <button type="button" onclick="tutupModal()">Batal</button>
+                   <button type="submit">Simpan & Cetak</button>
+               </div>
+           </form>
+       </div>
+   </div>
+   `;
 
    document.body.insertAdjacentHTML("beforeend", modalHTML);
 
@@ -185,10 +192,19 @@ function cetakInvoice(index) {
 
    data.data.forEach((item) => {
       const kategoriKey = item.kategori.toLowerCase();
-      const kelompok = cariKelompok(kategoriKey, item.ukuran, item.diameter);
-      const keyHarga = `${item.kategori.toLowerCase()}-${
-         item.ukuran
-      }-${kelompok}`;
+      const kelompok = cariKelompok(
+         kategoriKey === "standard" || kategoriKey === "reject"
+            ? "standardReject"
+            : kategoriKey,
+         item.ukuran,
+         item.diameter
+      );
+      const keyHarga = `${
+         kategoriKey === "standard" || kategoriKey === "reject"
+            ? "standardReject"
+            : kategoriKey
+      }-${item.ukuran}-${kelompok}`;
+
       const harga = hargaPerKelompok[keyHarga] || 0;
       const totalRowVol = item.volume * item.jumlah;
       const totalRowHarga = totalRowVol * harga;
@@ -206,19 +222,19 @@ function cetakInvoice(index) {
 
    const invoiceHTML = `
 <pre>
-====================================================
+==============================================================
                 PT. Meong Coding Sejahtera
 
 Tanggal Invoice : ${tanggalInvoice}
-Buyer           : ${data.pemesan}
-----------------------------------------------------
+Kepada          : ${data.pemesan}
+Pengirim        : ${data.oleh}
+--------------------------------------------------------------
 ${rincian}
-----------------------------------------------------
+--------------------------------------------------------------
 TOTAL JUMLAH    : ${totalKeseluruhanJumlah} batang
 TOTAL VOLUME    : ${totalKeseluruhanVol.toFixed(2)} m³
 TOTAL HARGA     : Rp ${totalKeseluruhanHarga.toLocaleString()}
-====================================================
-Pengirim: ${data.oleh}
+==============================================================
 </pre>
     `;
 
