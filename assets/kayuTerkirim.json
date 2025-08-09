@@ -1,0 +1,113 @@
+[
+   {
+      "oleh": "lapangan1",
+      "waktu": "2025-08-09T06:20:37.743Z",
+      "data": [
+         {
+            "kategori": "REJECT",
+            "ukuran": 260,
+            "diameter": 20,
+            "volume": 82,
+            "jumlah": 1
+         },
+         {
+            "kategori": "REJECT",
+            "ukuran": 260,
+            "diameter": 21,
+            "volume": 90,
+            "jumlah": 1
+         }
+      ]
+   },
+   {
+      "oleh": "lapangan1",
+      "waktu": "2025-08-09T06:22:06.071Z",
+      "data": [
+         {
+            "kategori": "SUPER",
+            "ukuran": 260,
+            "diameter": 20,
+            "volume": 82,
+            "jumlah": 1
+         },
+         {
+            "kategori": "SUPER",
+            "ukuran": 260,
+            "diameter": 21,
+            "volume": 90,
+            "jumlah": 1
+         },
+         {
+            "kategori": "SUPER",
+            "ukuran": 260,
+            "diameter": 22,
+            "volume": 99,
+            "jumlah": 1
+         }
+      ]
+   }
+]
+
+
+
+=====================Card Tabel=====================
+Date : 2025-08-09 - 06:22
+sender : lapagan1
+Category : SUPER
+ Ukuran Diameter Volume m3   jumlah     Harga/m3
+   100      9       8          2
+   130      10      9          20
+   200      11      10         30
+   260      11      12         100   
+-------------------------------------------------
+       Total = total volume,  jumlah,   total harga 
+
+Category : REJECT
+Ukuran Diameter Volume m3   jumlah     Harga/m3
+100      9       8          2
+200      11      10         30
+260      11      12         100   
+-------------------------------------------------
+      Total = total volume,  jumlah,   total harga 
+
+tombol -> [ Cetak Invoice ]    [ Tandai Lunas ]
+
+=======================Card Table=====================
+Date : 2025-09-10 - 08:22
+sender : lapagan1
+Category : SUPER
+ Ukuran Diameter Volume m3   jumlah     Harga/m3
+   200      11      10         30
+   260      11      12         100   
+-------------------------------------------------
+       Total = total volume,  jumlah,   total harga
+
+Category : REJECT
+Ukuran Diameter Volume m3   jumlah     Harga/m3
+100      9       8          2
+200      11      10         30
+260      11      12         100   
+-------------------------------------------------
+      Total = total volume,  jumlah,   total harga 
+       
+tombol -> [ Cetak Invoice ]    [ Tandai Lunas ]
+       
+====================================================
+
+         PT.Meong Coding Sejahtera
+         
+Naman Penerima : (pakai data dummy dulu)
+Tanggal Pengiriman : tanggal saat di buat invoice
+===================================================
+Total kayu:
+   Super : total dari semua kayu kategori super
+      Total volume :
+      Total Harga :
+   Reject :
+      Total volume :
+      Total Harga :
+
+Total keseluruhan:
+      volume :
+      harga :
+==================================================
