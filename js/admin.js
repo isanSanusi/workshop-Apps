@@ -2,31 +2,16 @@
 let semuaData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
 let hargaPerM3 = JSON.parse(localStorage.getItem("harga_per_m3")) || {};
 let dataRekapGabungan = {};
-let dataRincian = {};
 let tabelContainer = document.getElementById("tabelRekap");
 let totalHargaEl = document.getElementById("totalSemuaHarga");
-
-// Gabungkan data menjadi rekap per kategori-ukuran-diameter
 
 function rekapData() {
   dataRekapGabungan = {};
 
-  dataRincian = {};
-  semuaData.forEach((datas) => {
-    dataRincian["Sender"] = datas.oleh;
-    dataRincian["Date"] = datas.waktu;
-    let details = datas.data;
-    details.forEach((detail) => {
-      dataRincian["Category"] = detail.kategori;
-      dataRincian["Volume"] = detail.volume;
-      dataRincian["Total"] = detail.jumlah;
-    });
-    console.log(dataRincian);
-  });
-
   semuaData.forEach((entry) => {
     entry.data.forEach((item) => {
-      const key = `${item.kategori}-${item.ukuran}-${item.diameter}`;
+      const key =
+        `${item.kategori}-${item.ukuran}-${item.diameter}`.toLowerCase();
       if (!dataRekapGabungan[key]) {
         dataRekapGabungan[key] = {
           kategori: item.kategori,
@@ -49,7 +34,7 @@ function renderTabel() {
     "<table><tr><th>Kategori</th><th>Ukuran</th><th>Diameter</th><th>Volume</th><th>Total Volume</th><th>Jumlah</th><th>Harga/m³</th><th>Total Harga</th></tr>";
 
   Object.values(dataRekapGabungan).forEach((row, idx) => {
-    const keyHarga = `${row.kategori}-${row.ukuran}`;
+    const keyHarga = `${row.kategori}-${row.ukuran}`.toLowerCase();
     const harga = hargaPerM3[keyHarga] || 0;
     const totalVol = row.volume * row.jumlah;
     const totalHarga = totalVol * harga;
@@ -59,8 +44,8 @@ function renderTabel() {
         <td>${row.kategori}</td>
         <td>${row.ukuran}</td>
         <td>${row.diameter}</td>
-        <td>${row.volume}m<sup>3</td>
-        <td id="totalVol-${idx}">${totalVol.toFixed(2)}m<sup>3</td>
+        <td>${row.volume}</td>
+        <td id="totalVol-${idx}">${totalVol.toFixed(2)}</td>
         <td>
           <button onclick="ubahJumlah('${idx}', -1)">➖</button>
           <span id="jumlah-${idx}">${row.jumlah}</span>
@@ -90,8 +75,11 @@ function ubahJumlah(index, delta) {
 
 document.getElementById("hargaForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  const kat = document.getElementById("kategoriHarga").value;
-  const uk = document.getElementById("ukuranHarga").value;
+  const kat = document
+    .getElementById("kategoriHarga")
+    .value.trim()
+    .toLowerCase();
+  const uk = document.getElementById("ukuranHarga").value.trim().toLowerCase();
   const harga = parseInt(document.getElementById("inputHargaPerM3").value);
 
   if (!kat || !uk || isNaN(harga)) {
@@ -101,7 +89,9 @@ document.getElementById("hargaForm").addEventListener("submit", function (e) {
 
   const key = `${kat}-${uk}`;
   hargaPerM3[key] = harga;
+
   localStorage.setItem("harga_per_m3", JSON.stringify(hargaPerM3));
+  hargaPerM3 = JSON.parse(localStorage.getItem("harga_per_m3")); // reload dari storage
   alert("Harga disimpan.");
   renderTabel();
 });
