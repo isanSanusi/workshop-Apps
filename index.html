@@ -1,14 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page awal</title>
-  </head>
-  <body>
-    <div>
-      <p>Hello world</p>
-      <a href="./login.html">Masuk sini</a>
-    </div>
-  </body>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Loading...</title>
+      <style>
+         body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00c6ff, #ff00b5);
+            color: white;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+         }
+
+         h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            animation: fadeIn 1.2s ease-in-out;
+         }
+
+         /* Animasi loading dots */
+         .dots {
+            display: flex;
+            gap: 5px;
+         }
+
+         .dots div {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+         }
+
+         .dots div:nth-child(2) {
+            animation-delay: 0.2s;
+         }
+         .dots div:nth-child(3) {
+            animation-delay: 0.4s;
+         }
+
+         @keyframes bounce {
+            to {
+               transform: translateY(-8px);
+               opacity: 0.6;
+            }
+         }
+
+         @keyframes fadeIn {
+            from {
+               opacity: 0;
+               transform: translateY(20px);
+            }
+            to {
+               opacity: 1;
+               transform: translateY(0);
+            }
+         }
+      </style>
+      <script>
+         // Redirect otomatis ke login.html setelah 3 detik
+         setTimeout(() => {
+            window.location.href = "login.html";
+         }, 4000);
+      </script>
+   </head>
+   <body>
+      <h1>Dagoan wa...</h1>
+      <div class="dots">
+         <div></div>
+         <div></div>
+         <div></div>
+      </div>
+   </body>
 </html>

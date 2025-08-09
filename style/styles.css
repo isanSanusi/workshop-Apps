@@ -1,412 +1,379 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+
 /* =============== GLOBAL RESET =============== */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f9f9f9;
-  color: #333;
-  padding-bottom: 80px; /* for fixed footer space */
+   font-family: "Open Sans", sans-serif;
+   background: linear-gradient(135deg, #00c6ff, #ff00b5);
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding-bottom: 80px; /* for fixed footer space */
 }
 
 .container {
-  max-width: 960px;
-  margin: auto;
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+   max-width: 960px;
+   margin: auto;
+   background: white;
+   padding: 24px;
+   border-radius: 16px;
+   box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
 }
 
 .hidden {
-  display: none;
+   display: none;
 }
 
 .jumbotron {
-  width: 100%;
-  height: 220px;
-  background-color: #007f5f;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  font-weight: bold;
-  border-radius: 12px;
-  margin-bottom: 24px;
+   width: 100%;
+   height: 220px;
+   background-color: #007f5f;
+   color: white;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 2rem;
+   font-weight: bold;
+   border-radius: 12px;
+   margin-bottom: 24px;
 }
 
 h1,
 h2 {
-  text-align: center;
-  margin-top: 16px;
-  margin-bottom: 16px;
+   text-align: center;
+   margin-top: 16px;
+   margin-bottom: 16px;
 }
 
 .wraper-btn-subcat {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
 }
 
 .wraper-btn-subcat span {
-  font-size: 0.8rem;
+   font-size: 0.8rem;
 }
 
 .heading-input,
 .totalKayu-input {
-  background-color: #007bff;
-  margin: 0;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 5px;
+   background-color: #007bff;
+   margin: 0;
+   color: white;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 5px;
 }
 
 .heading-input span:nth-child(2),
 .totalKayu-input span:nth-child(2) {
-  font-size: 1rem;
-}
-
-/* ==============LOGIN PAGE ================ */
-.note {
-  color: black;
-  width: 100%;
-}
-
-.note p {
-  font-size: 1rem;
-}
-#loginPage {
-  max-width: 400px;
-  margin-top: 60px;
-  padding: 24px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-}
-
-#loginPage input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-#loginPage button {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #2b7efc;
-  color: white;
-  cursor: pointer;
+   font-size: 1rem;
 }
 
 /* =============== BUTTONS =============== */
 
 button {
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  color: white;
-  background-color: #dc3545;
+   border: none;
+   border-radius: 8px;
+   cursor: pointer;
+   transition: all 0.2s ease-in-out;
+   color: white;
+   background-color: #dc3545;
 }
 
 button:hover {
-  background: #1a5dc3;
-  color: white;
+   background: #1a5dc3;
+   color: white;
 }
 
 button:active {
-  transform: scale(0.97);
-  opacity: 0.9;
+   transform: scale(0.97);
+   opacity: 0.9;
 }
 
 /* Style saat tombol aktif */
 .btn-subcat button.active {
-  background-color: #2b7efc; /* Warna hijau */
-  color: white;
-  border-color: #45a049;
-  font-weight: bold;
+   background-color: #2b7efc; /* Warna hijau */
+   color: white;
+   border-color: #45a049;
+   font-weight: bold;
 }
 
 .btn-cat {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   gap: 15px;
 }
 
 .btn-subcat {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 1rem;
+   display: flex;
+   width: 100%;
+   justify-content: center;
+   gap: 1rem;
 }
 
 .btn-cat button,
 .btn-subcat button {
-  width: 100%;
-  padding: 20px;
-  font-size: 2rem;
+   width: 100%;
+   padding: 20px;
+   font-size: 2rem;
 }
 
 .btn-subcat button {
-  font-size: 1rem;
-  width: 15%;
-  color: #636262;
-  background-color: transparent;
+   font-size: 1rem;
+   width: 15%;
+   color: #636262;
+   background-color: transparent;
 }
 
 .btn-subcat button:hover {
-  color: white;
-  background-color: #1a5dc3;
+   color: white;
+   background-color: #1a5dc3;
 }
 
 .btn-opsi {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  background-color: #007bff;
+   display: flex;
+   justify-content: center;
+   width: 100%;
 }
 .btn-opsi button {
-  padding: 15px;
-  background-color: transparent;
-  font-size: 1rem;
+   padding: 15px;
+   font-size: 1rem;
+}
+
+.btn-cat .btn-logout {
+   width: 50%;
+   height: 50%;
+   font-size: 0.8rem;
+   background-color: #45a049;
 }
 
 .super {
-  background-color: #007bff;
+   background-color: #007bff;
 }
 
 .reject {
-  background-color: #dc3545;
-}
-
-.btn-kembali {
-  background: teal;
-}
-
-.reset-button {
-  background-color: #dc3545;
-}
-
-.reset-button:hover {
-  background-color: #c82333;
+   background-color: #dc3545;
 }
 
 /* =============== PRESET BUTTONS =============== */
 .btn-preset {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 15px;
+   display: flex;
+   justify-content: center;
+   flex-direction: row;
+   flex-wrap: wrap;
+   gap: 15px;
 }
 
 .preset-button {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 80px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  background-color: #1a5dc3;
-  color: white;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: all 0.2s ease-in-out;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   width: 100px;
+   height: 80px;
+   font-size: 1rem;
+   font-weight: bold;
+   border-radius: 10px;
+   background-color: #1a5dc3;
+   color: white;
+   cursor: pointer;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   transition: all 0.2s ease-in-out;
 }
 
 .preset-button:hover {
-  background-color: teal;
+   background-color: teal;
 }
 
 .preset-button .dia {
-  font-size: 1.1rem;
-  padding-bottom: 4px;
+   font-size: 1.1rem;
+   padding-bottom: 4px;
 }
 
 .preset-button .volume-jumlah {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 4px 6px;
-  font-size: 0.85rem;
-  background-color: #2b7efc;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 100%;
+   padding: 4px 6px;
+   font-size: 0.85rem;
+   background-color: #2b7efc;
 }
 
 .preset-button .volume-jumlah span:nth-child(2) {
-  background-color: yellow;
-  color: black;
-  font-weight: bold;
+   background-color: yellow;
+   color: black;
+   font-weight: bold;
 }
 
-/* =============== FIXED FOOTER BUTTONS =============== */
+/* ============================ FOOTER ========================== */
 .fixed-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 10vh;
-  background: #007bff;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 100;
-  gap: 10px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   padding: 12px 10px;
+   background: linear-gradient(135deg, #00c6ff, #ff00b5);
+   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+   display: flex;
+   gap: 8px;
+   justify-content: space-between;
+   align-items: center;
+   z-index: 100;
 }
 
 .fixed-footer button {
-  flex: 1;
-  max-width: 180px;
+   flex: 1;
+   margin: 0;
+   padding: 14px 0;
+   font-size: 1rem;
+   font-weight: 600;
+   border: none;
+   border-radius: 50px;
+   cursor: pointer;
+   transition: transform 0.1s ease, box-shadow 0.1s ease;
+   color: #fff;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* =============== TABLE =============== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 24px;
-  font-size: 0.95rem;
+.fixed-footer button:nth-child(1) {
+   background: #28a745; /* Save (Hijau) */
+}
+.fixed-footer button:nth-child(2) {
+   background: #dc3545; /* Reset (Merah) */
+}
+.fixed-footer button:nth-child(3) {
+   background: #6c757d; /* Back (Abu) */
 }
 
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
+.fixed-footer button:active {
+   transform: scale(0.95);
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-th {
-  background: #e9ecef;
+.fixed-footer button:hover {
+   opacity: 0.9;
 }
 
 /* =============== RESPONSIVE DESIGN =============== */
 @media (max-width: 600px) {
-  .container {
-    margin: 0;
-    padding: 15px;
-  }
+   .container {
+      margin: 0;
+      padding: 15px;
+   }
 
-  .btn-cat {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-  }
+   .btn-cat {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+   }
 
-  .btn-subcat {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 0.5rem;
-    padding: 0px;
-    border-radius: 2px;
-    gap: 0;
-  }
+   .btn-subcat {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      font-size: 0.5rem;
+      padding: 0px;
+      border-radius: 2px;
+      gap: 0;
+   }
 
-  .btn-subcat button {
-    width: 20%;
-    font-size: 0.8rem;
-    text-align: center;
-    padding-inline: 5px;
-    border-radius: 2px;
-    border-block: 1px solid rgb(47, 0, 255);
-  }
+   .btn-subcat button {
+      width: 20%;
+      font-size: 0.8rem;
+      text-align: center;
+      padding-inline: 5px;
+      border-radius: 2px;
+      border-block: 1px solid rgb(47, 0, 255);
+   }
 
-  button {
-    padding: 5px 15px;
-    font-size: 0.8rem;
-    width: 15%;
-    max-width: 180px;
-  }
+   button {
+      padding: 5px 15px;
+      font-size: 0.8rem;
+      width: 15%;
+      max-width: 180px;
+   }
 
-  .btn-preset {
-    gap: 3px;
-  }
+   .btn-preset {
+      gap: 3px;
+   }
 
-  .preset-button {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    font-size: 0.5rem;
-    font-weight: bold;
-    border-radius: 2px;
-    background-color: #1a5dc3;
-  }
+   .preset-button {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      font-size: 0.5rem;
+      font-weight: bold;
+      border-radius: 2px;
+      background-color: #1a5dc3;
+   }
 
-  .preset-button {
-    width: 10%;
-    min-width: 60px;
-    max-width: 90px;
-  }
+   .preset-button {
+      width: 10%;
+      min-width: 60px;
+      max-width: 90px;
+   }
 
-  .preset-button .dia {
-    font-size: 0.8rem;
-  }
+   .preset-button .dia {
+      font-size: 0.8rem;
+   }
 
-  .preset-button .volume-jumlah {
-    font-size: 0.5rem;
-    padding: 0 0 0 3px;
-  }
+   .preset-button .volume-jumlah {
+      font-size: 0.5rem;
+      padding: 0 0 0 3px;
+   }
 
-  .preset-button .volume-jumlah span:nth-child(2) {
-    background-color: yellow;
-    color: black;
-    font-weight: bold;
-    padding: 5px 2px;
-  }
+   .preset-button .volume-jumlah span:nth-child(2) {
+      background-color: yellow;
+      color: black;
+      font-weight: bold;
+      padding: 5px 2px;
+   }
 
-  .heading-input {
-    font-size: 0.8rem;
-    gap: 2px;
-  }
+   .heading-input {
+      font-size: 0.8rem;
+      gap: 2px;
+   }
 
-  .jumbotron {
-    height: 180px;
-    font-size: 1.5rem;
-  }
+   .jumbotron {
+      height: 180px;
+      font-size: 1.5rem;
+   }
 
-  .fixed-footer {
-    height: 5vh;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-  }
+   .fixed-footer {
+      height: 5vh;
+      border-top-left-radius: 50px;
+      border-top-right-radius: 50px;
+   }
 
-  .fixed-footer button {
-    font-size: 0.8rem;
-  }
+   .fixed-footer button {
+      font-size: 0.8rem;
+   }
 
-  h1,
-  h2 {
-    font-size: 1.25rem;
-  }
+   h1,
+   h2 {
+      font-size: 1.25rem;
+   }
 
-  table {
-    font-size: 0.85rem;
-  }
+   table {
+      font-size: 0.85rem;
+   }
 }

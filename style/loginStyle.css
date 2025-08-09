@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+body {
+   font-family: "Open Sans", sans-serif;
+   background: linear-gradient(135deg, #00c6ff, #ff00b5);
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.login-container {
+   width: 100%;
+   max-width: 400px;
+}
+
+.login-card {
+   background: #fff;
+   border-radius: 8px;
+   padding: 40px 30px;
+   text-align: center;
+   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-card h2 {
+   margin-bottom: 20px;
+}
+
+.input-group {
+   margin-bottom: 15px;
+}
+
+.input-group input {
+   width: 100%;
+   padding: 12px 15px;
+   border: none;
+   border-bottom: 2px solid #ccc;
+   font-size: 14px;
+   outline: none;
+}
+
+.input-group input:focus {
+   border-bottom: 2px solid #ff00b5;
+}
+
+.forgot {
+   text-align: right;
+   margin-bottom: 20px;
+}
+
+.forgot a {
+   color: #888;
+   font-size: 12px;
+   text-decoration: none;
+}
+
+.login-btn {
+   width: 100%;
+   padding: 12px;
+   border: none;
+   border-radius: 25px;
+   background: linear-gradient(to right, #00c6ff, #ff00b5);
+   color: #fff;
+   font-weight: bold;
+   cursor: pointer;
+   font-size: 14px;
+}
+
+.or-text {
+   margin: 20px 0 10px;
+   font-size: 12px;
+   color: #888;
+}
+
+.social-login {
+   display: flex;
+   justify-content: center;
+   gap: 10px;
+}
+
+.social-login a {
+   width: 35px;
+   height: 35px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #fff;
+   border-radius: 50%;
+   font-weight: bold;
+   text-decoration: none;
+}
+
+.fb {
+   background: #3b5998;
+}
+.tw {
+   background: #55acee;
+}
+.gl {
+   background: #dd4b39;
+}
+
+.signup-link {
+   display: inline-block;
+   margin-top: 10px;
+   text-decoration: none;
+   font-weight: bold;
+   color: #555;
+}
