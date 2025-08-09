@@ -8,40 +8,6 @@
    </head>
    <body>
       <h2>Rekap Data Kayu</h2>
-
-      <!-- Input Harga per m³ -->
-      <section id="formHarga">
-         <h3>Atur Harga per m³</h3>
-         <form id="hargaForm">
-            <label>
-               Kategori:
-               <select id="kategoriHarga">
-                  <option value="SUPER">SUPER</option>
-                  <option value="REJECT">REJECT</option>
-               </select>
-            </label>
-            <label>
-               Ukuran:
-               <select id="ukuranHarga">
-                  <option>100</option>
-                  <option>130</option>
-                  <option>200</option>
-                  <option>260</option>
-                  <option>Standard</option>
-               </select>
-            </label>
-            <label>
-               Harga/m³:
-               <input
-                  type="number"
-                  id="inputHargaPerM3"
-                  placeholder="contoh: 350000"
-               />
-            </label>
-            <button type="submit">Simpan Harga</button>
-         </form>
-      </section>
-
       <!-- Tabel Rekap -->
       <section id="rekapContainer">
          <h3>Data Diterima</h3>
@@ -50,9 +16,9 @@
 
       <button onclick="logout()">Logout</button>
       <a href="./arsip.html">Archives page</a>
+      <a href="../route/signup.html">Add New User</a>
 
       <script src="../js/auth.js"></script>
       <script src="../js/admin.js"></script>
-      <script src="../js/invoice.js"></script>
    </body>
 </html>

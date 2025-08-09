@@ -1,42 +1,28 @@
-// Ambil data awal dari localStorage
+// ==================== VARIABEL GLOBAL ====================
 let semuaData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
-let hargaPerM3 = JSON.parse(localStorage.getItem("harga_per_m3")) || {};
+let hargaPerKelompok =
+   JSON.parse(localStorage.getItem("harga_per_kelompok")) || {};
 let tabelContainer = document.getElementById("tabelRekap");
 
-// Fungsi set harga dari form
-document.getElementById("hargaForm").addEventListener("submit", function (e) {
-   e.preventDefault();
+// ==================== STRUKTUR HARGA DASAR ====================
+const strukturHarga = {
+   super: {
+      100: ["20-24", "25 up"],
+      130: ["15-19", "20-24", "25-29", "30 up"],
+      200: ["25-29", "30-39", "40-49", "50 up"],
+      260: ["25-29", "30-39", "40 up"],
+   },
+   standard: {
+      100: ["9", "10-14", "15 up"],
+      130: ["9", "10-14", "15 up"],
+   },
+   reject: {
+      100: ["9", "10-14", "15 up"],
+      130: ["9", "10-14", "15 up"],
+   },
+};
 
-   const kat = document
-      .getElementById("kategoriHarga")
-      .value.trim()
-      .toLowerCase();
-   const uk = document.getElementById("ukuranHarga").value.trim().toLowerCase();
-   const harga = parseInt(document.getElementById("inputHargaPerM3").value);
-
-   if (!kat || !uk || isNaN(harga)) {
-      alert("Lengkapi semua input harga.");
-      return;
-   }
-
-   // Buat key unik kategori-ukuran
-   const key = `${kat}-${uk}`;
-   hargaPerM3[key] = harga;
-
-   // Simpan ke localStorage
-   localStorage.setItem("harga_per_m3", JSON.stringify(hargaPerM3));
-
-   alert(`Harga ${kat} ukuran ${uk} disimpan: Rp ${harga.toLocaleString()}`);
-
-   // Reset form
-   document.getElementById("hargaForm").reset();
-
-   // Kalau tabel card ada di halaman ini, kita render ulang
-   if (typeof renderCards === "function") {
-      renderCards();
-   }
-});
-
+// ==================== RENDER KARTU TRANSAKSI ====================
 function renderCards() {
    let html = "";
 
@@ -46,102 +32,252 @@ function renderCards() {
       const jam = dateObj.toTimeString().slice(0, 5);
 
       html += `
-    <div class="card" style="border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:6px; background:#f9f9f9;">
-      <h3 style="margin:0;">Date: ${tanggal} - ${jam}</h3>
-      <p style="margin:2px 0 10px 0;">Sender: <strong>${entry.oleh}</strong></p>
-    `;
+        <div class="card" style="border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:6px; background:#f9f9f9;">
+            <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
+            <p>Sender: <strong>${entry.oleh}</strong></p>
+            <p>Date: ${tanggal} - ${jam}</p>
+        `;
 
-      // Ambil kategori unik
       const kategoriUnik = [...new Set(entry.data.map((d) => d.kategori))];
 
       kategoriUnik.forEach((kat) => {
-         html += `<h4 style="margin:10px 0 5px 0;">Category: ${kat}</h4>`;
+         html += `<h4>Category: ${kat}</h4>`;
          html += `
-        <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; background:white;">
-          <tr style="background:#ddd;">
-            <th>Ukuran</th>
-            <th>Diameter</th>
-            <th>Volume m³</th>
-            <th>Jumlah</th>
-            <th>Harga/m³</th>
-          </tr>
-      `;
+            <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; background:white;">
+                <tr style="background:#ddd;">
+                    <th>Ukuran</th>
+                    <th>Diameter</th>
+                    <th>Volume m³</th>
+                    <th>Jumlah</th>
+                </tr>
+            `;
 
          let totalVol = 0;
          let totalJumlah = 0;
-         let totalHarga = 0;
 
          entry.data
             .filter((d) => d.kategori === kat)
             .forEach((row) => {
-               const keyHarga = `${row.kategori}-${row.ukuran}`.toLowerCase();
-               const harga = hargaPerM3[keyHarga] || 0;
                const totalRow = row.volume * row.jumlah;
-               const totalRowHarga = totalRow * harga;
-
                totalVol += totalRow;
                totalJumlah += row.jumlah;
-               totalHarga += totalRowHarga;
 
                html += `
-            <tr>
-              <td>${row.ukuran}</td>
-              <td>${row.diameter}</td>
-              <td>${row.volume}</td>
-              <td>${row.jumlah}</td>
-              <td>Rp ${harga.toLocaleString()}</td>
-            </tr>
-          `;
+                <tr>
+                    <td>${row.ukuran}</td>
+                    <td>${row.diameter}</td>
+                    <td>${row.volume}</td>
+                    <td>${row.jumlah}</td>
+                </tr>
+                `;
             });
 
          html += `
-        <tr style="font-weight:bold; background:#eee;">
-          <td colspan="2">TOTAL</td>
-          <td>${totalVol.toFixed(2)}</td>
-          <td>${totalJumlah}</td>
-          <td>Rp ${totalHarga.toLocaleString()}</td>
-        </tr>
-      `;
-         html += `</table><br>`;
+                <tr style="font-weight:bold; background:#eee;">
+                    <td colspan="2">TOTAL</td>
+                    <td>${totalVol.toFixed(2)}</td>
+                    <td>${totalJumlah}</td>
+                </tr>
+            </table><br>`;
       });
 
       html += `
-      <div style="margin-top:10px;">
-        <button onclick="cetakInvoice(${entryIndex})" style="margin-right:5px;">Cetak Invoice</button>
-        <button onclick="tandaiLunas(${entryIndex})">Tandai Lunas</button>
-      </div>
-    </div>`;
+            <div style="margin-top:10px;">
+                <button onclick="bukaModalHarga(${entryIndex})">Cetak Invoice</button>
+                <button onclick="tandaiLunas(${entryIndex})">Tandai Lunas</button>
+            </div>
+        </div>
+        `;
    });
 
    tabelContainer.innerHTML = html;
 }
 
+// ==================== MODAL INPUT HARGA ====================
+function bukaModalHarga(index) {
+   const data = semuaData[index];
+   if (!data) return alert("Data tidak ditemukan");
+
+   let modalHTML = `
+    <div id="modalHarga" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0008;display:flex;justify-content:center;align-items:center;z-index:9999;">
+        <div style="background:white;padding:20px;border-radius:8px;max-height:90%;overflow:auto;width:500px;">
+            <h3>Input Harga /m³</h3>
+            <form id="formHarga">
+    `;
+
+   // Buat input harga per kelompok yang ada di transaksi ini
+   let kategoriDipakai = [
+      ...new Set(data.data.map((d) => d.kategori.toLowerCase())),
+   ];
+
+   kategoriDipakai.forEach((kat) => {
+      const ukuranDipakai = [
+         ...new Set(
+            data.data
+               .filter((d) => d.kategori.toLowerCase() === kat)
+               .map((d) => d.ukuran)
+         ),
+      ];
+
+      modalHTML += `<h4 style="margin-top:15px;">Kategori: ${kat.toUpperCase()}</h4>`;
+
+      ukuranDipakai.forEach((uk) => {
+         if (!strukturHarga[kat] || !strukturHarga[kat][uk]) return;
+
+         modalHTML += `<strong>Ukuran: ${uk}</strong><br>`;
+         strukturHarga[kat][uk].forEach((kelompok) => {
+            const key = `${kat}-${uk}-${kelompok}`;
+            const nilaiAwal = hargaPerKelompok[key] || "";
+            modalHTML += `
+                    <label>${kelompok} :</label>
+                    <input type="number" name="${key}" value="${nilaiAwal}" style="width:100%;margin-bottom:5px;">
+                `;
+         });
+      });
+   });
+
+   modalHTML += `
+                <div style="margin-top:10px;text-align:right;">
+                    <button type="button" onclick="tutupModal()">Batal</button>
+                    <button type="submit">Simpan & Cetak</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    `;
+
+   document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+   // Handle submit
+   document.getElementById("formHarga").onsubmit = function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      formData.forEach((val, key) => {
+         hargaPerKelompok[key] = parseFloat(val) || 0;
+      });
+      localStorage.setItem(
+         "harga_per_kelompok",
+         JSON.stringify(hargaPerKelompok)
+      );
+      tutupModal();
+      cetakInvoice(index);
+   };
+}
+
+function tutupModal() {
+   const modal = document.getElementById("modalHarga");
+   if (modal) modal.remove();
+}
+
+// ==================== CETAK INVOICE ====================
+function cetakInvoice(index) {
+   const data = semuaData[index];
+   if (!data) return alert("Data tidak ditemukan");
+
+   const dateObj = new Date();
+   const tanggalInvoice = dateObj.toISOString().slice(0, 10);
+
+   let totalKeseluruhanVol = 0;
+   let totalKeseluruhanHarga = 0;
+   let totalKeseluruhanJumlah = 0;
+
+   let rincian = "";
+
+   data.data.forEach((item) => {
+      const kategoriKey = item.kategori.toLowerCase();
+      const kelompok = cariKelompok(kategoriKey, item.ukuran, item.diameter);
+      const keyHarga = `${item.kategori.toLowerCase()}-${
+         item.ukuran
+      }-${kelompok}`;
+      const harga = hargaPerKelompok[keyHarga] || 0;
+      const totalRowVol = item.volume * item.jumlah;
+      const totalRowHarga = totalRowVol * harga;
+
+      rincian += `${item.kategori} ${item.ukuran} ${
+         item.diameter
+      }cm | Jumlah: ${item.jumlah} | Vol: ${totalRowVol.toFixed(
+         2
+      )} m³ | Harga/m³: Rp${harga.toLocaleString()} | Total: Rp${totalRowHarga.toLocaleString()}\n`;
+
+      totalKeseluruhanVol += totalRowVol;
+      totalKeseluruhanHarga += totalRowHarga;
+      totalKeseluruhanJumlah += Number(item.jumlah);
+   });
+
+   const invoiceHTML = `
+<pre>
+====================================================
+                PT. Meong Coding Sejahtera
+
+Tanggal Invoice : ${tanggalInvoice}
+Buyer           : ${data.pemesan}
+----------------------------------------------------
+${rincian}
+----------------------------------------------------
+TOTAL JUMLAH    : ${totalKeseluruhanJumlah} batang
+TOTAL VOLUME    : ${totalKeseluruhanVol.toFixed(2)} m³
+TOTAL HARGA     : Rp ${totalKeseluruhanHarga.toLocaleString()}
+====================================================
+Pengirim: ${data.oleh}
+</pre>
+    `;
+
+   const win = window.open("", "_blank");
+   win.document.write(`
+        <html>
+            <head>
+                <title>Invoice - ${tanggalInvoice}</title>
+                <style>
+                    body { font-family: monospace; white-space: pre; }
+                </style>
+            </head>
+            <body>
+                ${invoiceHTML}
+                <script>window.print();</script>
+            </body>
+        </html>
+    `);
+   win.document.close();
+}
+
+// ==================== FUNGSI BANTU ====================
+function cariKelompok(kategori, ukuran, diameter) {
+   diameter = parseFloat(diameter);
+   if (!strukturHarga[kategori] || !strukturHarga[kategori][ukuran]) return "";
+
+   // Cocokkan range
+   for (let k of strukturHarga[kategori][ukuran]) {
+      if (k.includes("-")) {
+         let [min, max] = k.split("-").map((n) => parseFloat(n));
+         if (diameter >= min && diameter <= max) return k;
+      } else if (k.includes("up")) {
+         let min = parseFloat(k);
+         if (diameter >= min) return k;
+      } else if (diameter == parseFloat(k)) {
+         return k;
+      }
+   }
+   return "";
+}
+
 function tandaiLunas(index) {
-   // Ambil data dari localStorage
    let dataTerkirim = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
    let dataLunas = JSON.parse(localStorage.getItem("kayu_lunas")) || [];
 
-   if (!dataTerkirim[index]) {
-      alert("Data tidak ditemukan!");
-      return;
-   }
+   if (!dataTerkirim[index]) return alert("Data tidak ditemukan!");
 
-   // Pindahkan data ke array lunas
    const transaksi = dataTerkirim[index];
    dataLunas.push(transaksi);
-
-   // Simpan ke localStorage
    localStorage.setItem("kayu_lunas", JSON.stringify(dataLunas));
 
-   // Hapus dari data terkirim
    dataTerkirim.splice(index, 1);
    localStorage.setItem("kayu_terkirim", JSON.stringify(dataTerkirim));
 
    alert("Transaksi berhasil ditandai lunas!");
-   renderData(); // Refresh tampilan halaman utama
+   renderCards();
 }
 
-// Auto update data jika ada perubahan di localStorage
+// ==================== AUTO REFRESH ====================
 setInterval(() => {
    const latestData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
    if (JSON.stringify(latestData) !== JSON.stringify(semuaData)) {
@@ -150,7 +286,7 @@ setInterval(() => {
    }
 }, 2000);
 
-// Load awal
+// ==================== LOAD AWAL ====================
 window.onload = () => {
    renderCards();
 };

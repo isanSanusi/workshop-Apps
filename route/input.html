@@ -8,54 +8,56 @@
   </head>
   <body>
     <div class="container">
-      <!-- Halaman 1: Pilih Kategori -->
-      <div id="halamanKategori">
-        <div class="jumbotron">
-          <h1>📘 WAREHOUSE APPS V.1.0</h1>
+     <!-- Halaman 1: Pilih Kategori -->
+     <div id="halamanKategori">
+      <div class="jumbotron">
+        <div class="buyer-input">
+          <label for="buyer">Masukan Nama Pemesan</label>
+          <input id="buyer" type="text" placeholder="Contoh: Bapak Acong">
         </div>
-        <h2>Choose Category</h2>
-        <div class="btn-cat category">
-          <button class="super" onclick="pilihKategori('SUPER')">SUPER</button>
-          <button class="reject" onclick="pilihKategori('REJECT')">
-            REJECT
+      </div>
+      <h2>Choose Category</h2>
+      <div class="btn-cat category">
+        <button class="super" onclick="pilihKategori('SUPER')">SUPER</button>
+        <button class="standard" onclick="pilihKategori('STANDARD')">STANDARD</button>
+        <button class="reject" onclick="pilihKategori('REJECT')">REJECT</button>
+        <div class="tableData"></div>
+        <button class="btn-logout" onclick="logout()">Logout</button>
+      </div>
+      <h1>📘 WAREHOUSE APPS V.1.2</h1>
+    </div>
+    <!-- Halaman 2: Pilih Ukuran -->
+    <div class="hidden" id="halamanInput">
+      <div class="btn-subcat">
+        <button onclick="pilihUkuran(100)">100cm</button>
+        <button onclick="pilihUkuran(130)">130cm</button>
+        <button onclick="pilihUkuran(200)">200cm</button>
+        <button onclick="pilihUkuran(260)">260cm</button>
+      </div>
+      <!-- Halaman 3: Input Diameter -->
+      <div class="" id="halamanPreset">
+        <div class="wraper-btn-subcat">
+          <h2 class="heading-input" id="judulInput"></h2>
+          <h2 id="kategori-input"></h2>
+          <h2 class="totalKayu-input" id="totalKayuKategori"></h2>
+        </div>
+        <div class="btn-preset" id="presetTombol"></div>
+      </div>
+      <div class="fixed-footer">
+        <div class="btn-opsi">
+          <button onclick="simpanData()">💾 Save</button>
+          <button onclick="resetData()" class="reset-button">
+            Reset
           </button>
-          <div class="tableData"></div>
-          <button class="btn-logout" onclick="logout()">Logout</button>
+          <button
+            class="btn-kembali"
+            onclick="onBack()"
+          >
+            ⬅️ Back
+          </button>
         </div>
       </div>
-      <!-- Halaman 2: Pilih Ukuran -->
-      <div class="hidden" id="halamanInput">
-        <div class="btn-subcat">
-          <button onclick="pilihUkuran(100)">100cm</button>
-          <button onclick="pilihUkuran(130)">130cm</button>
-          <button onclick="pilihUkuran(200)">200cm</button>
-          <button onclick="pilihUkuran(260)">260cm</button>
-          <button onclick="pilihUkuran('standard')">standard</button>
-        </div>
-        <!-- Halaman 3: Input Diameter -->
-        <div class="" id="halamanPreset">
-          <div class="wraper-btn-subcat">
-            <h2 class="heading-input" id="judulInput"></h2>
-            <h2 id="kategori-input"></h2>
-            <h2 class="totalKayu-input" id="totalKayuKategori"></h2>
-          </div>
-          <div class="btn-preset" id="presetTombol"></div>
-        </div>
-        <div class="fixed-footer">
-          <div class="btn-opsi">
-            <button onclick="simpanData()">💾 Save</button>
-            <button onclick="resetData()" class="reset-button">
-              Reset
-            </button>
-            <button
-              class="btn-kembali"
-              onclick="onBack()"
-            >
-              ⬅️ Back
-            </button>
-          </div>
-        </div>
-      </div>
+    </div>
       
 
     <script src="../js/auth.js"></script>
