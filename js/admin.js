@@ -117,9 +117,28 @@ function renderCards() {
 }
 
 function tandaiLunas(index) {
-   const data = semuaData[index];
-   alert(`Data dari ${data.oleh} - ${data.waktu} ditandai lunas`);
-   // Bisa update status di localStorage kalau perlu
+   // Ambil data dari localStorage
+   let dataTerkirim = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
+   let dataLunas = JSON.parse(localStorage.getItem("kayu_lunas")) || [];
+
+   if (!dataTerkirim[index]) {
+      alert("Data tidak ditemukan!");
+      return;
+   }
+
+   // Pindahkan data ke array lunas
+   const transaksi = dataTerkirim[index];
+   dataLunas.push(transaksi);
+
+   // Simpan ke localStorage
+   localStorage.setItem("kayu_lunas", JSON.stringify(dataLunas));
+
+   // Hapus dari data terkirim
+   dataTerkirim.splice(index, 1);
+   localStorage.setItem("kayu_terkirim", JSON.stringify(dataTerkirim));
+
+   alert("Transaksi berhasil ditandai lunas!");
+   renderData(); // Refresh tampilan halaman utama
 }
 
 // Auto update data jika ada perubahan di localStorage

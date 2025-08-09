@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Arsip Transaksi Lunas</title>
+      <link rel="stylesheet" href="../style/adminstyle.css" />
+   </head>
+   <body>
+      <div class="container" id="lunasContainer"></div>
+      <a href="./admin.html" class="btn-back">⬅ Kembali</a>
+
+      <script>
+         function renderDataLunas() {
+            const dataLunas =
+               JSON.parse(localStorage.getItem("kayu_lunas")) || [];
+            const hargaPerM3 =
+               JSON.parse(localStorage.getItem("harga_per_m3")) || {};
+            const container = document.getElementById("lunasContainer");
+            container.innerHTML = "";
+
+            if (dataLunas.length === 0) {
+               container.innerHTML = "<p>Tidak ada transaksi lunas.</p>";
+               return;
+            }
+
+            dataLunas.forEach((transaksi) => {
+               const date = new Date(transaksi.waktu);
+               let cardHTML = `
+         <div class="card">
+            <h4>Date: ${date
+               .toISOString()
+               .slice(0, 16)
+               .replace("T", " - ")}</h4>
+            <p>Sender: ${transaksi.oleh}</p>
+      `;
+
+               // Kelompokkan berdasarkan kategori
+               const kategoriMap = {};
+               transaksi.data.forEach((d) => {
+                  if (!kategoriMap[d.kategori]) kategoriMap[d.kategori] = [];
+                  kategoriMap[d.kategori].push(d);
+               });
+
+               // Render setiap kategori
+               Object.keys(kategoriMap).forEach((kat) => {
+                  let totalVol = 0,
+                     totalJml = 0,
+                     totalHarga = 0;
+                  cardHTML += `
+            <h5>Category: ${kat}</h5>
+            <table>
+               <thead>
+                  <tr>
+                     <th>Ukuran</th>
+                     <th>Diameter</th>
+                     <th>Volume m³</th>
+                     <th>Jumlah</th>
+                     <th>Harga/m³</th>
+                  </tr>
+               </thead>
+               <tbody>
+         `;
+                  kategoriMap[kat].forEach((row) => {
+                     const hargaKey = `${kat.toLowerCase()}-${row.ukuran}`;
+                     const hargaM3 = hargaPerM3[hargaKey] || 0;
+                     totalVol += row.volume;
+                     totalJml += row.jumlah;
+                     totalHarga += row.volume * hargaM3;
+
+                     cardHTML += `
+               <tr>
+                  <td>${row.ukuran}</td>
+                  <td>${row.diameter}</td>
+                  <td>${row.volume}</td>
+                  <td>${row.jumlah}</td>
+                  <td>Rp ${hargaM3.toLocaleString()}</td>
+               </tr>
+            `;
+                  });
+
+                  cardHTML += `
+               </tbody>
+            </table>
+            <p class="total-line">
+               <strong>Total Volume:</strong> ${totalVol} m³ | 
+               <strong>Total Jumlah:</strong> ${totalJml} | 
+               <strong>Total Harga:</strong> Rp ${totalHarga.toLocaleString()}
+            </p>
+         `;
+               });
+
+               cardHTML += `</div>`;
+               container.innerHTML += cardHTML;
+            });
+         }
+
+         document.addEventListener("DOMContentLoaded", renderDataLunas);
+      </script>
+   </body>
+</html>
