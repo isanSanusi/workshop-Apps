@@ -8,23 +8,26 @@ let totalHargaEl = document.getElementById("totalSemuaHarga");
 function kelompokkanData() {
   let dataKelompok = {};
 
-  // Kelompokkan berdasarkan pengirim dan tanggal
-  semuaData.forEach((entry) => {
-    const key = `${entry.pengirim}_${entry.tanggal}`;
+  semuaData.forEach((entry, groupIndex) => {
+    const key = `${entry.pengirim}||${entry.tanggal}`;
     if (!dataKelompok[key]) {
       dataKelompok[key] = {
         pengirim: entry.pengirim,
         tanggal: entry.tanggal,
-        kategori: {}, // Sub-kelompok berdasarkan kategori
+        kategori: {},
       };
     }
 
-    // Kelompokkan berdasarkan kategori dalam setiap pengirim
-    entry.data.forEach((item) => {
+    entry.data.forEach((item, originalIndex) => {
       if (!dataKelompok[key].kategori[item.kategori]) {
         dataKelompok[key].kategori[item.kategori] = [];
       }
-      dataKelompok[key].kategori[item.kategori].push(item);
+      // Simpan originalIndex untuk tracking saat klik tombol
+      dataKelompok[key].kategori[item.kategori].push({
+        ...item,
+        originalIndex,
+        groupIndex,
+      });
     });
   });
 
@@ -42,12 +45,12 @@ function hitungTotal(dataKelompok) {
 
     Object.keys(kelompok.kategori).forEach((kategori) => {
       kelompok.kategori[kategori].forEach((item) => {
-        // Normalisasi key harga menjadi lowercase
         const hargaKey = `${item.kategori}-${item.ukuran}`.toLowerCase();
         const harga = hargaPerM3[hargaKey] || 0;
 
         item.totalVolume = item.volume * item.jumlah;
         item.totalHarga = item.totalVolume * harga;
+
         kelompok.totalHarga += item.totalHarga;
         totalVolumeKeseluruhan += item.totalVolume;
       });
@@ -63,18 +66,14 @@ function hitungTotal(dataKelompok) {
   };
 }
 
+// Render tabel
 function renderTabel() {
-  const { dataKelompok, totalKeseluruhan } = hitungTotal(kelompokkanData());
+  const { dataKelompok, totalKeseluruhan, totalVolumeKeseluruhan } =
+    hitungTotal(kelompokkanData());
   let html = "";
-  let totalVolumeKeseluruhan = 0;
 
   Object.keys(dataKelompok).forEach((key) => {
     const kelompok = dataKelompok[key];
-    Object.keys(kelompok.kategori).forEach((kategori) => {
-      kelompok.kategori[kategori].forEach((item) => {
-        totalVolumeKeseluruhan += item.totalVolume;
-      });
-    });
 
     html += `
       <div class="card">
@@ -105,10 +104,10 @@ function renderTabel() {
             <tbody>
       `;
 
-      kelompok.kategori[kategori].forEach((item, index) => {
-        const hargaKey = `${item.kategori}-${item.ukuran}`;
+      kelompok.kategori[kategori].forEach((item) => {
+        const hargaKey = `${item.kategori}-${item.ukuran}`.toLowerCase();
         const harga = hargaPerM3[hargaKey] || 0;
-        const uniqueId = `${key}_${kategori}_${index}`;
+        const uniqueId = `${key}_${kategori}_${item.originalIndex}`;
 
         html += `
           <tr id="row-${uniqueId}">
@@ -120,8 +119,12 @@ function renderTabel() {
             <td>Rp ${harga.toLocaleString()}</td>
             <td id="totalHarga-${uniqueId}">Rp ${item.totalHarga.toLocaleString()}</td>
             <td class="aksi">
-              <button onclick="ubahJumlah('${uniqueId}', '${key}', '${kategori}', ${index}, -1)">➖</button>
-              <button onclick="ubahJumlah('${uniqueId}', '${key}', '${kategori}', ${index}, 1)">➕</button>
+              <button onclick="ubahJumlah(${item.groupIndex}, ${
+          item.originalIndex
+        }, -1)">➖</button>
+              <button onclick="ubahJumlah(${item.groupIndex}, ${
+          item.originalIndex
+        }, 1)">➕</button>
             </td>
           </tr>
         `;
@@ -156,40 +159,19 @@ function renderTabel() {
   `;
 }
 
-// Fungsi untuk mengubah jumlah
-function ubahJumlah(uniqueId, groupKey, kategori, index, delta) {
-  // Temukan data yang sesuai di localStorage
-  const semuaData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
+// Fungsi ubah jumlah
+function ubahJumlah(groupIndex, originalIndex, delta) {
+  if (!semuaData[groupIndex] || !semuaData[groupIndex].data[originalIndex])
+    return;
 
-  // Temukan group berdasarkan pengirim dan tanggal
-  const groupParts = groupKey.split("_");
-  const pengirim = groupParts[0];
-  const tanggal = groupParts.slice(1).join("_"); // Handle tanggal yang mungkin mengandung underscore
-
-  const groupIndex = semuaData.findIndex(
-    (entry) => entry.pengirim === pengirim && entry.tanggal === tanggal
-  );
-
-  if (groupIndex === -1) return;
-
-  // Temukan item yang akan diubah
-  const item = semuaData[groupIndex].data.find(
-    (it, idx) => it.kategori === kategori && idx === index
-  );
-
-  if (!item) return;
-
-  // Update jumlah
+  let item = semuaData[groupIndex].data[originalIndex];
   item.jumlah = Math.max(0, item.jumlah + delta);
 
-  // Simpan kembali ke localStorage
   localStorage.setItem("kayu_terkirim", JSON.stringify(semuaData));
-
-  // Perbarui tampilan
   renderTabel();
 }
 
-// Fungsi untuk menangani form harga (tetap sama)
+// Form harga
 document.getElementById("hargaForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const kat = document.getElementById("kategoriHarga").value;
@@ -201,7 +183,7 @@ document.getElementById("hargaForm").addEventListener("submit", function (e) {
     return;
   }
 
-  const key = `${kat}-${uk}`;
+  const key = `${kat}-${uk}`.toLowerCase();
   hargaPerM3[key] = harga;
   localStorage.setItem("harga_per_m3", JSON.stringify(hargaPerM3));
   alert("Harga disimpan.");
