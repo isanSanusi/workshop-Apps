@@ -49,15 +49,41 @@ body {
    border-bottom: 2px solid #ff00b5;
 }
 
+.roles {
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+}
+
+.roles label {
+   font-size: 1.3rem;
+   margin-bottom: 10px;
+}
+
+.roles select {
+   border: none;
+   text-align: center;
+   border-radius: 20px;
+   font-size: 1.3rem;
+   width: 200px;
+   border: none;
+   margin-bottom: 10px;
+}
+
 .forgot {
    text-align: right;
    margin-bottom: 20px;
 }
 
-.forgot a {
+.forgot a,
+.back-link a {
    color: #888;
    font-size: 12px;
    text-decoration: none;
+}
+
+.back-link {
+   margin-top: 5px;
 }
 
 .login-btn {

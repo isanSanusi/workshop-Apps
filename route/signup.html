@@ -4,34 +4,46 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Signup - Prototype</title>
+      <link rel="stylesheet" href="../style/flash.css" />
       <link rel="stylesheet" href="../style/loginStyle.css" />
    </head>
    <body>
       <div class="login-container">
-         <h2>Daftarkan Akun Baru</h2>
-         <form id="signupForm">
-            <div class="input-group">
-               <label for="username">Username</label>
-               <input type="text" id="username" required />
-            </div>
-            <div class="input-group">
-               <label for="password">Password</label>
-               <input type="password" id="password" required />
-            </div>
-            <div class="input-group">
-               <label for="role">Role</label>
-               <select id="role" required>
-                  <option value="admin">admin</option>
-                  <option value="lapangan">lapangan</option>
-               </select>
-            </div>
-            <button type="submit">Daftar</button>
-            <p class="back-link">
-               <a href="./admin.html">⬅️ Kembali ke Admin</a>
-            </p>
-         </form>
+         <div class="login-card">
+            <h2>Create New User</h2>
+            <form id="signupForm">
+               <div class="input-group">
+                  <input
+                     type="text"
+                     id="username"
+                     required
+                     placeholder="Name new user"
+                  />
+               </div>
+               <div class="input-group">
+                  <input
+                     type="password"
+                     id="password"
+                     required
+                     placeholder="Password new user"
+                  />
+               </div>
+               <div class="roles">
+                  <label for="role">Choose Role</label>
+                  <select id="role" required>
+                     <option value="admin">admin</option>
+                     <option value="lapangan">lapangan</option>
+                  </select>
+               </div>
+               <button type="submit" class="login-btn">Daftar</button>
+               <p class="back-link">
+                  <a href="./admin.html">⬅️ Kembali ke Admin</a>
+               </p>
+            </form>
+         </div>
       </div>
 
+      <script src="../js/flash.js"></script>
       <script>
          document
             .getElementById("signupForm")
@@ -47,7 +59,7 @@
                const role = document.getElementById("role").value;
 
                if (!username || !password) {
-                  alert("Username dan Password harus diisi!");
+                  flashAlert("error", "Username and Password empty");
                   return;
                }
 
@@ -56,7 +68,7 @@
 
                // Cek apakah username sudah dipakai
                if (users.some((u) => u.username === username)) {
-                  alert("Username sudah digunakan!");
+                  flashAlert("error", "Username is exist");
                   return;
                }
 
@@ -68,7 +80,7 @@
                });
 
                localStorage.setItem("users", JSON.stringify(users));
-               alert("User berhasil didaftarkan!");
+               flashAlert("success", "Horay..New user was added");
                window.location.href = "./admin.html";
             });
       </script>

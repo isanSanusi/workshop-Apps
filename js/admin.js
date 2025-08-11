@@ -6,12 +6,19 @@ let tabelContainer = document.getElementById("tabelRekap");
 
 /// ==================== STRUKTUR HARGA DASAR ====================
 const strukturHarga = {
-   standardReject: ["9", "10-14", "15-up"],
+   standard: {
+      100: ["9", "10-14", "15-55"],
+      130: ["9", "10-14", "15-55"],
+   },
+   reject: {
+      100: ["9", "10-14", "15-55"],
+      130: ["9", "10-14", "15-55"],
+   },
    super: {
-      100: ["20-24", "25-up"],
-      130: ["15-19", "20-24", "25-29", "30-up"],
-      200: ["25-29", "30-39", "40-49", "50-up"],
-      260: ["25-29", "30-39", "40-up"],
+      100: ["20-24", "25-55"],
+      130: ["15-19", "20-24", "25-29", "30-55"],
+      200: ["25-29", "30-39", "40-49", "50-80"],
+      260: ["25-29", "30-39", "40-80"],
    },
 };
 
@@ -104,9 +111,12 @@ function bukaModalHarga(index) {
    );
    if (adaStandardReject) {
       modalHTML += `<h4>Kategori: STANDARD & REJECT (100 & 130)</h4>`;
-      ["9", "10-14", "15 up"].forEach((kelompok) => {
+      ["9", "10-14", "15-55"].forEach((kelompok) => {
          const key = `standardReject-${kelompok}`;
-         const nilaiAwal = hargaPerKelompok[key] || "";
+         const nilaiAwal =
+            hargaPerKelompok[`standard-${kelompok}`] ??
+            hargaPerKelompok[`reject-${kelompok}`] ??
+            "";
          modalHTML += `
                <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px;">
                   <div style="flex:1;">${kelompok}</div>
@@ -118,10 +128,10 @@ function bukaModalHarga(index) {
 
    // Kategori super tetap seperti struktur harga
    const kategoriSuper = [
-      { ukuran: "100", kelompok: ["20-24", "25 up"] },
-      { ukuran: "130", kelompok: ["15-19", "20-24", "25-29", "30 up"] },
-      { ukuran: "200", kelompok: ["25-29", "30-39", "40-49", "50 up"] },
-      { ukuran: "260", kelompok: ["25-29", "30-39", "40 up"] },
+      { ukuran: "100", kelompok: ["20-24", "25-55"] },
+      { ukuran: "130", kelompok: ["15-19", "20-24", "25-29", "30-55"] },
+      { ukuran: "200", kelompok: ["25-29", "30-39", "40-49", "50-80"] },
+      { ukuran: "260", kelompok: ["25-29", "30-39", "40-80"] },
    ];
 
    kategoriSuper.forEach((s) => {
@@ -160,7 +170,25 @@ function bukaModalHarga(index) {
       e.preventDefault();
       const formData = new FormData(e.target);
       formData.forEach((val, key) => {
-         hargaPerKelompok[key] = parseFloat(val) || 0;
+         const harga = parseFloat(val) || 0;
+
+         if (key.startsWith("standardReject-")) {
+            const range = key.replace("standardReject-", "");
+
+            // Simpan untuk semua kombinasi ukuran & kategori
+            ["standard", "reject"].forEach((kat) => {
+               ["100", "130"].forEach((ukuran) => {
+                  hargaPerKelompok[`${kat}-${ukuran}-${range}`] = harga;
+               });
+            });
+         } else {
+            hargaPerKelompok[key] = harga;
+         }
+      });
+      Object.keys(hargaPerKelompok).forEach((k) => {
+         if (k.startsWith("standardReject-")) {
+            delete hargaPerKelompok[k];
+         }
       });
       localStorage.setItem(
          "harga_per_kelompok",
@@ -188,88 +216,129 @@ function cetakInvoice(index) {
    let totalKeseluruhanHarga = 0;
    let totalKeseluruhanJumlah = 0;
 
-   let rincian = "";
+   let rincianTabel = [
+      [
+         "Kategori",
+         "Ukuran",
+         "Diameter",
+         "Jumlah",
+         "Volume m³",
+         "Harga/m³",
+         "Total Harga",
+      ],
+   ];
+   let rincianText = "";
 
    data.data.forEach((item) => {
       const kategoriKey = item.kategori.toLowerCase();
-      const kelompok = cariKelompok(
-         kategoriKey === "standard" || kategoriKey === "reject"
-            ? "standardReject"
-            : kategoriKey,
-         item.ukuran,
-         item.diameter
-      );
-      const keyHarga = `${
-         kategoriKey === "standard" || kategoriKey === "reject"
-            ? "standardReject"
-            : kategoriKey
-      }-${item.ukuran}-${kelompok}`;
+      const kelompok = cariKelompok(kategoriKey, item.ukuran, item.diameter);
+      const keyHarga = `${kategoriKey}-${item.ukuran}-${kelompok}`;
 
       const harga = hargaPerKelompok[keyHarga] || 0;
+      console.log(keyHarga, harga); // cek kalau udah sesuai
+
       const totalRowVol = item.volume * item.jumlah;
       const totalRowHarga = totalRowVol * harga;
 
-      rincian += `${item.kategori} ${item.ukuran} ${
+      rincianText += `${item.kategori} ${item.ukuran} ${
          item.diameter
       }cm | Jumlah: ${item.jumlah} | Vol: ${totalRowVol.toFixed(
          2
       )} m³ | Harga/m³: Rp${harga.toLocaleString()} | Total: Rp${totalRowHarga.toLocaleString()}\n`;
+
+      rincianTabel.push([
+         item.kategori,
+         item.ukuran,
+         item.diameter,
+         item.jumlah,
+         totalRowVol.toFixed(2),
+         harga,
+         totalRowHarga,
+      ]);
 
       totalKeseluruhanVol += totalRowVol;
       totalKeseluruhanHarga += totalRowHarga;
       totalKeseluruhanJumlah += Number(item.jumlah);
    });
 
+   // Cetak invoice ke tab baru
    const invoiceHTML = `
 <pre>
 ==============================================================
-                PT. Meong Coding Sejahtera
+               PT. Meong Coding Sejahtera
 
 Tanggal Invoice : ${tanggalInvoice}
 Kepada          : ${data.pemesan}
 Pengirim        : ${data.oleh}
 --------------------------------------------------------------
-${rincian}
+${rincianText}
 --------------------------------------------------------------
 TOTAL JUMLAH    : ${totalKeseluruhanJumlah} batang
 TOTAL VOLUME    : ${totalKeseluruhanVol.toFixed(2)} m³
 TOTAL HARGA     : Rp ${totalKeseluruhanHarga.toLocaleString()}
 ==============================================================
 </pre>
-    `;
-
+   `;
    const win = window.open("", "_blank");
    win.document.write(`
-        <html>
-            <head>
-                <title>Invoice - ${tanggalInvoice}</title>
-                <style>
-                    body { font-family: monospace; white-space: pre; }
-                </style>
-            </head>
-            <body>
-                ${invoiceHTML}
-                <script>window.print();</script>
-            </body>
-        </html>
-    `);
+       <html>
+           <head>
+               <title>Invoice - ${tanggalInvoice}</title>
+               <style>
+                   body { font-family: monospace; white-space: pre; }
+               </style>
+           </head>
+           <body>
+               ${invoiceHTML}
+               <script>window.print();</script>
+           </body>
+       </html>
+   `);
    win.document.close();
+
+   // Simpan ke CSV langsung
+   exportDataArrayToCSV(rincianTabel, `invoice_${tanggalInvoice}.csv`);
+}
+
+function exportDataArrayToCSV(dataArray, filename) {
+   const csvContent = dataArray
+      .map((row) =>
+         row
+            .map((cell) => {
+               let text = String(cell).replace(/"/g, '""');
+               return text.includes(",") || text.includes("\n")
+                  ? `"${text}"`
+                  : text;
+            })
+            .join(",")
+      )
+      .join("\n");
+
+   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+   const link = document.createElement("a");
+   link.href = URL.createObjectURL(blob);
+   link.download = filename;
+   document.body.appendChild(link);
+   link.click();
+   document.body.removeChild(link);
 }
 
 // ==================== FUNGSI BANTU ====================
+function normalisasiKelompok(str) {
+   return str.toString().trim().replace(/\s+/g, "").toLowerCase(); // hilangin semua spasi
+}
+
 function cariKelompok(kategori, ukuran, diameter) {
    diameter = parseFloat(diameter);
    if (!strukturHarga[kategori] || !strukturHarga[kategori][ukuran]) return "";
 
-   // Cocokkan range
    for (let k of strukturHarga[kategori][ukuran]) {
-      if (k.includes("-")) {
-         let [min, max] = k.split("-").map((n) => parseFloat(n));
+      let key = normalisasiKelompok(k);
+
+      if (key.includes("-")) {
+         let [min, max] = key.split("-").map((n) => parseFloat(n));
          if (diameter >= min && diameter <= max) return k;
-      } else if (k.includes("up")) {
-         let min = parseFloat(k);
-         if (diameter >= min) return k;
-      } else if (diameter == parseFloat(k)) {
+      } else if (!isNaN(parseFloat(key)) && diameter === parseFloat(key)) {
          return k;
       }
    }
@@ -289,7 +358,7 @@ function tandaiLunas(index) {
    dataTerkirim.splice(index, 1);
    localStorage.setItem("kayu_terkirim", JSON.stringify(dataTerkirim));
 
-   alert("Transaksi berhasil ditandai lunas!");
+   flashAlert("success", "Transaksi berhasil di tandai lunas");
    renderCards();
 }
 

@@ -3,6 +3,8 @@ const users = [
    { username: "admin1", password: "admin", role: "admin" },
 ];
 
+const btnSignup = document.getElementById("btn-signups");
+const btnForgot = document.getElementById("forgot-password");
 // const users = JSON.parse(localStorage.getItem("users")) || [];
 
 function handleLogin(event) {
@@ -16,7 +18,7 @@ function handleLogin(event) {
    );
 
    if (!user) {
-      if (errorEl) errorEl.textContent = "Maneh saha ? naha aweuh di database.";
+      if (errorEl) errorEl.textContent = "Wrong Username and Password";
       return false;
    }
 
@@ -48,6 +50,13 @@ if (location.pathname.endsWith("/admin.html")) {
    }
 }
 
+// btnSignup.addEventListener("click", () => {
+//    flashAlert("error", "Please contact admin for registration");
+// });
+
+// btnForgot.addEventListener("click", () => {
+//    flashAlert("error", "Kasiiaaannn deh loe..");
+// });
 // Logout
 function logout() {
    localStorage.removeItem("loggedInUser");
