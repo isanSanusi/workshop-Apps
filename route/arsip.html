@@ -4,8 +4,26 @@
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Arsip Transaksi Lunas</title>
-      <link rel="stylesheet" href="../style/adminstyle.css" />
+      <link
+         rel="shortcut icon"
+         href="../asset/img/LogiFlow.ico"
+         type="image/x-icon"
+      />
+      <link
+         rel="icon"
+         type="image/png"
+         sizes="16x10"
+         href="../asset/img/LogiFlow-mini.png"
+      />
+      <link
+         rel="apple-touch-icon"
+         sizes="180x180"
+         href="../asset/img/LogiFlow.png"
+      />
+      <link rel="manifest" href="/site.webmanifest" />
+      <title>LogiFlow</title>
+      <link rel="stylesheet" href="../asset/style/flash.css" />
+      <link rel="stylesheet" href="../asset/style/adminstyle.css" />
       <style>
          .btn-delete {
             background: #e74c3c;
@@ -23,8 +41,8 @@
    </head>
    <body>
       <div class="container" id="lunasContainer"></div>
-      <a href="./admin.html" class="btn-back">⬅ Kembali</a>
-
+      <a href="./admin.html" class="btn-back">⬅ Back</a>
+      <script src="../asset/js/flash.js"></script>
       <script>
          // Struktur kelompok harga
          const strukturHarga = {
@@ -78,12 +96,13 @@
                const date = new Date(transaksi.waktu);
                let cardHTML = `
                <div class="card">
-                  <h4>Date: ${date
-                     .toISOString()
-                     .slice(0, 16)
-                     .replace("T", " - ")}</h4>
-                  <p>Buyer: ${transaksi.pemesan}</p>
-                  <p>Sender: ${transaksi.oleh}</p>
+                     <h4>Date: ${date
+                        .toISOString()
+                        .slice(0, 16)
+                        .replace("T", " - ")}</h4>
+                     <p>Buyer: ${transaksi.pemesan}</p>
+                     <p>Sender: ${transaksi.oleh}</p>
+                  
             `;
 
                // Kelompokkan berdasarkan kategori
@@ -101,6 +120,7 @@
 
                   cardHTML += `
                   <h5>Category: ${kat}</h5>
+            
                   <table>
                      <thead>
                         <tr>
@@ -153,7 +173,7 @@
 
                // Tambahkan tombol hapus
                cardHTML += `
-                  <button class="btn-delete" onclick="hapusTransaksi(${index})">Hapus Transaksi</button>
+                  <button class="btn-delete" onclick="hapusTransaksi(${index})">Delete Transaction</button>
                </div>
             `;
 
@@ -164,11 +184,16 @@
          function hapusTransaksi(index) {
             let dataLunas =
                JSON.parse(localStorage.getItem("kayu_lunas")) || [];
-            if (confirm("Yakin ingin menghapus transaksi ini?")) {
-               dataLunas.splice(index, 1);
-               localStorage.setItem("kayu_lunas", JSON.stringify(dataLunas));
-               renderDataLunas();
-            }
+            flashConfirm("Delete transaction record?").then((result) => {
+               if (result) {
+                  dataLunas.splice(index, 1);
+                  localStorage.setItem("kayu_lunas", JSON.stringify(dataLunas));
+                  flashAlert("success", "Transaction was deleted!");
+                  renderDataLunas();
+               } else {
+                  flashAlert("info", "Delete canceled.");
+               }
+            });
          }
 
          document.addEventListener("DOMContentLoaded", renderDataLunas);

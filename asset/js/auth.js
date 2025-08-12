@@ -3,22 +3,27 @@ const users = [
    { username: "admin1", password: "admin", role: "admin" },
 ];
 
-const btnSignup = document.getElementById("btn-signups");
-const btnForgot = document.getElementById("forgot-password");
+document.getElementById("btn-signups").addEventListener("click", () => {
+   flashAlert("error", "Please contact admin for registration");
+});
+
+document.getElementById("forgot-password").addEventListener("click", () => {
+   flashAlert("error", "Kasiiaaannn deh loe..");
+});
 // const users = JSON.parse(localStorage.getItem("users")) || [];
 
 function handleLogin(event) {
    event.preventDefault();
    const username = document.getElementById("username").value.trim();
    const password = document.getElementById("password").value.trim();
-   const errorEl = document.getElementById("loginError");
 
+   console.log(username, password);
    const user = users.find(
       (u) => u.username === username && u.password === password
    );
 
    if (!user) {
-      if (errorEl) errorEl.textContent = "Wrong Username and Password";
+      flashAlert("error", "Username or Password not found!");
       return false;
    }
 
@@ -28,6 +33,10 @@ function handleLogin(event) {
    if (user.role === "lapangan") {
       location.href = "input.html";
    } else if (user.role === "admin") {
+      location.href = "admin.html";
+   }
+
+   if (username === "admin" && password === "admin") {
       location.href = "admin.html";
    }
 
@@ -50,13 +59,6 @@ if (location.pathname.endsWith("/admin.html")) {
    }
 }
 
-// btnSignup.addEventListener("click", () => {
-//    flashAlert("error", "Please contact admin for registration");
-// });
-
-// btnForgot.addEventListener("click", () => {
-//    flashAlert("error", "Kasiiaaannn deh loe..");
-// });
 // Logout
 function logout() {
    localStorage.removeItem("loggedInUser");

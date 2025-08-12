@@ -33,9 +33,11 @@ function renderCards() {
 
       html += `
         <div class="card" style="border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:6px; background:#f9f9f9;">
-            <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
-            <p>Sender: <strong>${entry.oleh}</strong></p>
-            <p>Date: ${tanggal} - ${jam}</p>
+            <div class="heading-wrapper>
+               <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
+               <p>Sender: <strong>${entry.oleh}</strong></p>
+               <p>Date: ${tanggal} - ${jam}</p>
+            </div>
         `;
 
       const kategoriUnik = [...new Set(entry.data.map((d) => d.kategori))];

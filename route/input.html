@@ -3,9 +3,26 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>input data Kayu</title>
-      <link rel="stylesheet" href="../style/styles.css" />
-      <link rel="stylesheet" href="../style/flash.css" />
+      <link
+         rel="shortcut icon"
+         href="../asset/img/LogiFlow.ico"
+         type="image/x-icon"
+      />
+      <link
+         rel="icon"
+         type="image/png"
+         sizes="16x10"
+         href="../asset/img/LogiFlow-mini.png"
+      />
+      <link
+         rel="apple-touch-icon"
+         sizes="180x180"
+         href="../asset/img/LogiFlow.png"
+      />
+      <link rel="manifest" href="/site.webmanifest" />
+      <title>LogiFlow</title>
+      <link rel="stylesheet" href="../asset/style/styles.css" />
+      <link rel="stylesheet" href="../asset/style/flash.css" />
    </head>
    <body>
       <div class="container">
@@ -13,16 +30,16 @@
          <div id="halamanKategori">
             <div class="jumbotron">
                <div class="buyer-input">
-                  <label for="buyer">Masukan Nama Pemesan</label>
+                  <label for="buyer">Enter Customer Name</label>
                   <input
                      id="buyer"
                      type="text"
-                     placeholder="Contoh: Bapak Acong"
+                     placeholder="Examp.: Koh Acong"
                   />
                </div>
             </div>
 
-            <h2 class="section-title">Pilih Kategori</h2>
+            <h2 class="section-title">Choose Category</h2>
             <div class="btn-cat category">
                <button class="btn super" onclick="pilihKategori('SUPER')">
                   SUPER
@@ -36,7 +53,10 @@
                <button class="btn btn-logout" onclick="logout()">Logout</button>
             </div>
 
-            <h1 class="app-title">📘 WAREHOUSE APPS V.1.2</h1>
+            <h1 class="app-title">
+               📘 Timber Calc <br />
+               By Meong Coding &copy;2025
+            </h1>
          </div>
 
          <!-- Halaman 2: Pilih Ukuran -->
@@ -70,8 +90,8 @@
          </div>
       </div>
 
-      <script src="../js/flash.js"></script>
-      <script src="../js/auth.js"></script>
-      <script src="../js/input.js"></script>
+      <script src="../asset/js/flash.js"></script>
+      <script src="../asset/js/auth.js"></script>
+      <script src="../asset/js/input.js"></script>
    </body>
 </html>

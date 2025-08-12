@@ -127,7 +127,7 @@ function hitungKayu() {
    // cari el penampung jumlah /sub lalu isi
    //  examp. sub = 100, jumlah di tekan = 20
    document.getElementById("judulInput").innerHTML = `
-    <span>Ukuran ${subkategoriTerpilih}</span>
+    <span>Size ${subkategoriTerpilih}</span>
     <span>${totalKayu}</span>`;
 }
 
@@ -157,7 +157,7 @@ function updateTotalKayuKategori() {
    // yang sudah di dapat
    const el = document.getElementById("totalKayuKategori");
    if (el) {
-      el.innerHTML = `<span>Total Kayu</span><span>${total}</span>`;
+      el.innerHTML = `<span>Total wood</span><span>${total}</span>`;
    }
 }
 
@@ -296,7 +296,7 @@ function onBack() {
 
 function simpanData() {
    if (dataTercatat.length === 0) {
-      flashAlert("error", "Belum Ada data yang disimpan!");
+      flashAlert("error", "Nothing to save!");
       return;
    }
    const user = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -340,13 +340,13 @@ function simpanData() {
    };
 
    generatePreset(kategoriTerpilih, subkategoriTerpilih);
-   flashAlert("success", "Data Tersimpan dan terkirim ke admin!");
+   flashAlert("success", "Data saved and was sent to admin!");
 
    onBack();
 }
 
 function resetData() {
-   flashConfirm("Yakin ingin menghapus semua data?").then((result) => {
+   flashConfirm("Are you sure delete all data?").then((result) => {
       if (result) {
          dataTercatat = [];
          jumlahPerKategori = {
@@ -367,9 +367,9 @@ function resetData() {
          };
          generatePreset(kategoriTerpilih, subkategoriTerpilih);
          onBack();
-         flashAlert("success", "Data berhasil di reset!");
+         flashAlert("success", "Resete data succesfully!");
       } else {
-         flashAlert("info", "Penghapusan dibatalkan.");
+         flashAlert("info", "Erase canceled.");
       }
    });
 }

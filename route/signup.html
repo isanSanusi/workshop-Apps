@@ -3,9 +3,27 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Signup - Prototype</title>
-      <link rel="stylesheet" href="../style/flash.css" />
-      <link rel="stylesheet" href="../style/loginStyle.css" />
+      <link
+         rel="shortcut icon"
+         href="../asset/img/LogiFlow.ico"
+         type="image/x-icon"
+      />
+      <link
+         rel="icon"
+         type="image/png"
+         sizes="16x10"
+         href="../asset/img/LogiFlow-mini.png"
+      />
+      <link
+         rel="apple-touch-icon"
+         sizes="180x180"
+         href="../asset/img/LogiFlow.png"
+      />
+      <link rel="manifest" href="/site.webmanifest" />
+      <title>LogiFlow | Signup</title>
+      <link rel="stylesheet" href="../asset/style/bootstrap-icons.css" />
+      <link rel="stylesheet" href="../asset/style/flash.css" />
+      <link rel="stylesheet" href="../asset/style/loginStyle.css" />
    </head>
    <body>
       <div class="login-container">
@@ -13,6 +31,9 @@
             <h2>Create New User</h2>
             <form id="signupForm">
                <div class="input-group">
+                  <label for="username"
+                     ><i class="bi bi-person-fill"></i
+                  ></label>
                   <input
                      type="text"
                      id="username"
@@ -21,6 +42,7 @@
                   />
                </div>
                <div class="input-group">
+                  <label for="password"><i class="bi bi-lock-fill"></i></label>
                   <input
                      type="password"
                      id="password"
@@ -37,13 +59,14 @@
                </div>
                <button type="submit" class="login-btn">Daftar</button>
                <p class="back-link">
-                  <a href="./admin.html">⬅️ Kembali ke Admin</a>
+                  <a href="./admin.html">⬅️ Back</a>
                </p>
             </form>
          </div>
       </div>
 
-      <script src="../js/flash.js"></script>
+      <script src="../asset/js/bootstrap.bundle.js"></script>
+      <script src="../asset/js/flash.js"></script>
       <script>
          document
             .getElementById("signupForm")
@@ -81,7 +104,9 @@
 
                localStorage.setItem("users", JSON.stringify(users));
                flashAlert("success", "Horay..New user was added");
-               window.location.href = "./admin.html";
+               setTimeout(() => {
+                  window.location.href = "./admin.html";
+               }, 2000);
             });
       </script>
    </body>

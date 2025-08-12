@@ -3,9 +3,27 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Login</title>
-      <link rel="stylesheet" href="../style/flash.css" />
-      <link rel="stylesheet" href="../style/loginStyle.css" />
+      <link
+         rel="shortcut icon"
+         href="../asset/img/LogiFlow.ico"
+         type="image/x-icon"
+      />
+      <link
+         rel="icon"
+         type="image/png"
+         sizes="16x10"
+         href="../asset/img/LogiFlow-mini.png"
+      />
+      <link
+         rel="apple-touch-icon"
+         sizes="180x180"
+         href="../asset/img/LogiFlow.png"
+      />
+      <link rel="manifest" href="/site.webmanifest" />
+      <title>LogiFlow | Login</title>
+      <link rel="stylesheet" href="../asset/style/bootstrap-icons.css" />
+      <link rel="stylesheet" href="../asset/style/flash.css" />
+      <link rel="stylesheet" href="../asset/style/loginStyle.css" />
    </head>
    <body>
       <div class="login-container">
@@ -13,6 +31,9 @@
             <h2>Login</h2>
             <form id="loginForm" onsubmit="return handleLogin(event)">
                <div class="input-group">
+                  <label for="username"
+                     ><i class="bi bi-person-fill"></i
+                  ></label>
                   <input
                      id="username"
                      type="text"
@@ -21,6 +42,7 @@
                   />
                </div>
                <div class="input-group">
+                  <label for="password"><i class="bi bi-lock-fill"></i></label>
                   <input
                      id="password"
                      type="password"
@@ -28,22 +50,26 @@
                      required
                   />
                </div>
+
                <div class="forgot">
                   <a href="#" id="forgot-password">Forgot password?</a>
                </div>
-               <button type="submit" class="login-btn">LOGIN</button>
+               <button type="submit" class="login-btn">
+                  <i class="bi bi-sign"></i>LOGIN
+               </button>
                <p class="or-text">Or Sign Up Using</p>
                <div class="social-login">
-                  <a href="#" class="fb">F</a>
-                  <a href="#" class="tw">T</a>
-                  <a href="#" class="gl">G</a>
+                  <a href="#" class="fb"><i class="bi bi-facebook"></i></a>
+                  <a href="#" class="tw"><i class="bi bi-instagram"></i></a>
+                  <a href="#" class="gl"><i class="bi bi-google"></i></a>
                </div>
                <p class="or-text">Or Sign Up Using</p>
                <a href="#" id="btn-signups" class="signup-link">SIGN UP</a>
             </form>
          </div>
       </div>
-      <script src="../js/flash.js"></script>
-      <script src="../js/auth.js"></script>
+      <script src="../asset/js/bootstrap.bundle.js"></script>
+      <script src="../asset/js/flash.js"></script>
+      <script src="../asset/js/auth.js"></script>
    </body>
 </html>

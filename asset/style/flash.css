@@ -1,4 +1,9 @@
 /* Flash Alert */
+@font-face {
+   font-family: "Poppins";
+   src: url(../asset/font/Poppins-Medium.ttf) format("truetype");
+}
+
 #flash-alert-container {
    width: 100%;
    position: fixed;
@@ -20,7 +25,7 @@
    display: flex;
    align-items: center;
    gap: 8px;
-   font-family: sans-serif;
+   font-family: "Poppins";
    animation: fadein 0.3s, fadeout 0.3s ease 3s forwards;
 }
 
@@ -65,6 +70,7 @@
 
 /* Custom Confirm */
 #custom-confirm-container {
+   font-family: "Poppins", sans-serif;
    position: fixed;
    top: 0;
    left: 0;
@@ -82,8 +88,12 @@
    padding: 20px;
    border-radius: 6px;
    text-align: center;
-   min-width: 350px;
+   min-width: 300px;
    min-height: 100px;
+}
+
+.custom-confirm-box div {
+   font-size: 1.3rem;
 }
 
 .custom-confirm-buttons {
