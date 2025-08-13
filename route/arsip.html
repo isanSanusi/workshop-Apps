@@ -40,8 +40,13 @@
       </style>
    </head>
    <body>
+      <nav>
+         <h2>Arsip Dashboard</h2>
+         <div class="btn-group">
+            <a href="./admin.html" class="btn-nav back">⬅ Back to admin</a>
+         </div>
+      </nav>
       <div class="container" id="lunasContainer"></div>
-      <a href="./admin.html" class="btn-back">⬅ Back</a>
       <script src="../asset/js/flash.js"></script>
       <script>
          // Struktur kelompok harga
@@ -96,12 +101,14 @@
                const date = new Date(transaksi.waktu);
                let cardHTML = `
                <div class="card" >
-                     <h4>Date: ${date
+                  <div class="wrapper-info">  
+                     <h3>Buyer: ${transaksi.pemesan}</h3>
+                     <p>Date: ${date
                         .toISOString()
                         .slice(0, 16)
-                        .replace("T", " - ")}</h4>
-                     <p>Buyer: ${transaksi.pemesan}</p>
+                        .replace("T", " - ")}</p>
                      <p>Sender: ${transaksi.oleh}</p>
+                     </div>
                   
             `;
 
@@ -164,9 +171,9 @@
                      </tbody>
                   </table>
                   <p class="total-line">
-                     <strong>Total Volume:</strong> ${totalVol} m³ | 
-                     <strong>Total Jumlah:</strong> ${totalJml} | 
-                     <strong>Total Harga:</strong> Rp ${totalHarga.toLocaleString()}
+                     <span><strong>Total Volume:</strong> ${totalVol} m³ </span> 
+                     <span><strong>Total Jumlah:</strong> ${totalJml} </span>
+                     <span><strong>Total Harga:</strong> Rp ${totalHarga.toLocaleString()} </span>
                   </p>
                `;
                });

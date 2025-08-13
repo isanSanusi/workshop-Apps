@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @font-face {
    font-family: "Poppins";
    src: url(../asset/font/Poppins-Medium.ttf) format("truetype");
@@ -11,6 +13,10 @@
 }
 
 body {
+   min-height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
    font-family: "Poppins", sans-serif;
    background: linear-gradient(135deg, #00c6ff, #ff00b5);
    padding: 60px 20px 120px 20px; /* for fixed footer space */
@@ -22,12 +28,14 @@ body {
 
 /* ==================== HALAMAN WELCOME */
 .container {
-   min-height: 80vh;
-   max-width: 960px;
    background: white;
-   padding: 20px;
+   padding: 20px 0;
    border-radius: 16px;
    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.jumbotron-wrapper {
+   padding: 0 20px 0 20px;
 }
 
 .jumbotron {
@@ -37,25 +45,31 @@ body {
    color: white;
    display: flex;
    align-items: center;
-   justify-content: center;
+   justify-content: space-around;
+   gap: 2rem;
    border-radius: 12px;
    margin-bottom: 24px;
    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
    padding: 20px;
 }
 
+/* ===== INPUT CUSTOMER ====== */
+
+.jumbotron .officer {
+   margin-bottom: 20px;
+   font-size: 1.5rem;
+}
+
 .buyer-input {
    width: 100%;
    max-width: 400px;
 }
-
 .buyer-input label {
    font-size: 0.9rem;
    margin-bottom: 6px;
    display: block;
    font-weight: 500;
 }
-
 .buyer-input input {
    width: 100%;
    padding: 12px 15px;
@@ -65,7 +79,6 @@ body {
    outline: none;
    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .buyer-input input:focus {
    border-color: #0d6efd;
    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
@@ -87,23 +100,12 @@ body {
    color: #888;
 }
 
-/* ==================================== */
-
+/* ============= DISPLAY TOTAL ======================= */
 h1,
 h2 {
    text-align: center;
    margin-top: 16px;
    margin-bottom: 16px;
-}
-
-.wraper-btn-subcat {
-   display: flex;
-   justify-content: space-around;
-   align-items: center;
-}
-
-.wraper-btn-subcat span {
-   font-size: 0.8rem;
 }
 
 .heading-input,
@@ -123,7 +125,20 @@ h2 {
    font-size: 1rem;
 }
 
+#kategori-input span {
+   text-align: center;
+   font-size: 1.5rem;
+}
+
 /* =============== BUTTONS =============== */
+.wraper-btn-subcat {
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+}
+.wraper-btn-subcat span {
+   font-size: 0.8rem;
+}
 .btn-cat {
    width: 100%;
    display: flex;
@@ -227,20 +242,21 @@ h2 {
    justify-content: center;
    flex-direction: row;
    flex-wrap: wrap;
-   gap: 15px;
+   gap: 1rem;
 }
 
 .preset-button {
+   border: 0;
    padding: 0;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   width: 100px;
-   height: 80px;
+   width: 80px;
+   height: 60px;
    font-size: 1rem;
    font-weight: bold;
-   border-radius: 10px;
+   border-radius: 8px;
    background-color: #1a5dc3;
    color: white;
    cursor: pointer;
@@ -264,13 +280,13 @@ h2 {
    justify-content: space-between;
    align-items: center;
    width: 100%;
-   padding: 4px 6px;
    font-size: 0.85rem;
    background-color: #2b7efc;
 }
 
 .preset-button .volume-jumlah span:nth-child(2) {
    background-color: yellow;
+   padding: 0.5rem;
    color: black;
    font-weight: bold;
 }
@@ -367,9 +383,11 @@ h2 {
    }
 
    .jumbotron {
+      height: 180px;
       align-items: start;
       justify-content: start;
       flex-direction: column;
+      font-size: 1.5rem;
    }
 
    .jumbotron .officer {
@@ -379,6 +397,8 @@ h2 {
    .jumbotron-wrapper {
       padding: 0 20px 0 20px;
    }
+
+   /* ====== BUTTON ============ */
 
    .btn-cat {
       width: 100%;
@@ -467,6 +487,8 @@ h2 {
       font-size: 0.8rem;
    }
 
+   /* ====== DISPLAY HEADING ======= */
+
    .heading-input {
       font-size: 0.8rem;
       gap: 2px;
@@ -475,17 +497,6 @@ h2 {
    #kategori-input span {
       text-align: center;
       font-size: 1.5rem;
-   }
-
-   .jumbotron {
-      height: 180px;
-      font-size: 1.5rem;
-   }
-
-   .fixed-footer {
-      height: 5vh;
-      border-top-left-radius: 50px;
-      border-top-right-radius: 50px;
    }
 
    .fixed-footer button {
@@ -497,8 +508,10 @@ h2 {
       font-size: 1.25rem;
    }
 
-   table {
-      font-size: 0.85rem;
+   .fixed-footer {
+      height: 5vh;
+      border-top-left-radius: 50px;
+      border-top-right-radius: 50px;
    }
 }
 

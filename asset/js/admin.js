@@ -33,15 +33,17 @@ function renderCards() {
 
       html += `
         <div class="card" style="border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:6px; background:#f9f9f9;">
-               <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
+        <div class="wrapper-info">       
+        <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
+        <p>Date: ${tanggal} - ${jam}</p>
                <p>Sender: <strong>${entry.oleh}</strong></p>
-               <p>Date: ${tanggal} - ${jam}</p>
+               </div><div class="tabel-wrapper">
         `;
 
       const kategoriUnik = [...new Set(entry.data.map((d) => d.kategori))];
 
       kategoriUnik.forEach((kat) => {
-         html += `<h4>Category: ${kat}</h4>`;
+         html += `<div><h4>Category: ${kat}</h4>`;
          html += `
             <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; background:white;">
                 <tr style="background:#ddd;">
@@ -78,13 +80,13 @@ function renderCards() {
                     <td>${totalVol.toFixed(2)}</td>
                     <td>${totalJumlah}</td>
                 </tr>
-            </table><br>`;
+            </table></div>`;
       });
 
-      html += `
+      html += `</div>
             <div style="margin-top:10px;">
-                <button onclick="bukaModalHarga(${entryIndex})">Cetak Invoice</button>
-                <button onclick="tandaiLunas(${entryIndex})">Tandai Lunas</button>
+                <button class="btn-option" onclick="bukaModalHarga(${entryIndex})">Cetak Invoice</button>
+                <button class="btn-option" onclick="tandaiLunas(${entryIndex})">Tandai Lunas</button>
             </div>
         </div>
         `;
@@ -155,8 +157,8 @@ function bukaModalHarga(index) {
 
    modalHTML += `
                <div style="margin-top:10px;text-align:right;">
-                   <button type="button" onclick="tutupModal()">Batal</button>
-                   <button type="submit">Simpan & Cetak</button>
+                   <button class="btn-option" type="button" onclick="tutupModal()">Batal</button>
+                   <button class="btn-option" type="submit">Simpan & Cetak</button>
                </div>
            </form>
        </div>

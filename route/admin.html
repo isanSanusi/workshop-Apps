@@ -27,18 +27,20 @@
       <link rel="stylesheet" href="../asset/style/bootstrap-icons.css" />
    </head>
    <body>
-      <h2>Rekap Data Kayu</h2>
+      <nav>
+         <h2>Admin Dashboard</h2>
+         <div class="btn-group">
+            <a class="btn-nav" href="./arsip.html">Archives page</a>
+            <a class="btn-nav" href="./signup.html">Add New User</a>
+            <button class="btn-nav" onclick="logout()">Logout</button>
+         </div>
+      </nav>
+
       <!-- Tabel Rekap -->
       <section id="rekapContainer">
-         <h3>Data Diterima</h3>
+         <h3>Receive Datas</h3>
          <div id="tabelRekap"></div>
       </section>
-
-      <div class="btn-group">
-         <button onclick="logout()">Logout</button>
-         <a href="./arsip.html">Archives page</a>
-         <a href="./signup.html">Add New User</a>
-      </div>
 
       <script src="../asset/js/bootstrap.bundle.js"></script>
       <script src="../asset/js/flash.js"></script>
