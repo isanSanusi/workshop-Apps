@@ -3,6 +3,9 @@ const users = [
    { username: "admin1", password: "admin", role: "admin" },
 ];
 
+const officer = JSON.parse(localStorage.getItem("loggedInUser"));
+document.getElementById("officer-name").textContent = officer.username;
+
 document.getElementById("btn-signups").addEventListener("click", () => {
    flashAlert("error", "Please contact admin for registration");
 });
@@ -17,7 +20,6 @@ function handleLogin(event) {
    const username = document.getElementById("username").value.trim();
    const password = document.getElementById("password").value.trim();
 
-   console.log(username, password);
    const user = users.find(
       (u) => u.username === username && u.password === password
    );
