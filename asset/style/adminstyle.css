@@ -263,3 +263,36 @@ form button:hover {
       font-size: 0.6rem;
    }
 }
+
+@media (max-width: 487px) {
+   .card .wrapper-info {
+      background-color: transparent;
+      color: #333;
+      gap: 0;
+      justify-content: start;
+      align-items: start;
+      flex-direction: column;
+   }
+
+   .card .wrapper-info p,
+   .card .wrapper-info h3 {
+      width: 100%;
+      color: #333;
+      margin: 0;
+      padding: 10px 0;
+      border-bottom: #34495e solid 1px;
+   }
+
+   table th {
+      font-size: 10px;
+   }
+}
+
+@media (max-width: 310px) {
+   .card {
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+   }
+}

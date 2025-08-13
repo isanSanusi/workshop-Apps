@@ -40,7 +40,6 @@ body {
 
 .jumbotron {
    width: 100%;
-   min-height: 180px;
    background: linear-gradient(135deg, #0d6efd, #007f5f);
    color: white;
    display: flex;
@@ -375,11 +374,17 @@ h2 {
    }
 
    .container {
-      min-height: 100vh;
+      margin: 20px;
+      width: 100%;
       padding-bottom: 100px;
       margin: 0;
-      padding: 30px 2px 80px 2px;
+      padding: 30px 2px 100px 2px;
       border-radius: 0;
+   }
+
+   .jumbotron-wrapper {
+      padding: 20px;
+      width: 100%;
    }
 
    .jumbotron {
@@ -394,16 +399,12 @@ h2 {
       margin-bottom: 20px;
    }
 
-   .jumbotron-wrapper {
-      padding: 0 20px 0 20px;
-   }
-
    /* ====== BUTTON ============ */
 
    .btn-cat {
       width: 100%;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
       gap: 15px;
@@ -412,7 +413,7 @@ h2 {
 
    .btn-cat button {
       height: 50px;
-      width: 100%;
+      width: 40%;
    }
 
    .btn-subcat {
@@ -466,7 +467,7 @@ h2 {
    }
 
    .preset-button .dia {
-      font-size: 1rem;
+      font-size: 0.8rem;
    }
 
    .preset-button .volume-jumlah {
@@ -517,11 +518,21 @@ h2 {
 
 @media (max-width: 369px) {
    .container {
-      padding: 5px;
+      width: 100%;
+      padding: 5px 5px 80px 5px;
    }
+
    .preset-button {
       min-width: 4rem;
       max-width: 3.5rem;
+   }
+
+   .preset-button .dia {
+      font-size: 0.8rem;
+   }
+
+   .preset-button .volume-jumlah {
+      height: 40%;
    }
 
    .preset-button .volume-jumlah span:nth-child(1) {
@@ -531,5 +542,51 @@ h2 {
    .heading-input span:nth-child(2),
    .totalKayu-input span:nth-child(2) {
       font-size: 0.8rem;
+   }
+}
+
+@media (max-width: 215px) {
+   body {
+      padding-bottom: 100px;
+   }
+   .heading-input span:nth-child(2),
+   .totalKayu-input span:nth-child(2) {
+      font-size: 0.5rem;
+   }
+
+   .heading-input span:nth-child(1),
+   .totalKayu-input span:nth-child(1) {
+      font-size: 0.5rem;
+   }
+
+   .heading-input,
+   .totalKayu-input {
+      width: 50px;
+   }
+
+   #kategori-input span {
+      text-align: center;
+      font-size: 0.8rem;
+   }
+
+   .container {
+      padding-bottom: 100px;
+      width: 100%;
+   }
+
+   .jumbotron-wrapper {
+      padding: 10px;
+   }
+
+   .jumbotron {
+      gap: 0;
+   }
+
+   .btn-cat {
+      flex-direction: row;
+   }
+
+   .btn-cat button {
+      width: 40%;
    }
 }
