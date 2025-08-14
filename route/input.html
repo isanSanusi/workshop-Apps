@@ -3,6 +3,7 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="../asset/style/bootstrap-icons.css" />
       <link
          rel="shortcut icon"
          href="../asset/img/LogiFlow.ico"
@@ -81,12 +82,14 @@
             </div>
             <div class="fixed-footer">
                <div class="btn-opsi">
-                  <button onclick="simpanData()">💾 Save</button>
-                  <button onclick="resetData()" class="reset-button">
-                     Reset
+                  <button onclick="simpanData()" class="flexy">
+                     <i class="bi bi-floppy"></i>Save
                   </button>
-                  <button class="btn-kembali" onclick="onBack()">
-                     ⬅️ Back
+                  <button onclick="resetData()" class="reset-button flexy">
+                     <i class="bi bi-arrow-clockwise"></i>Reset
+                  </button>
+                  <button class="btn-kembali flexy" onclick="onBack()">
+                     <i class="bi bi-caret-left-fill"></i> Category
                   </button>
                </div>
             </div>
@@ -96,5 +99,6 @@
       <script src="../asset/js/flash.js"></script>
       <script src="../asset/js/auth.js"></script>
       <script src="../asset/js/input.js"></script>
+      <script src="../asset/js/bootstrap.bundle.js"></script>
    </body>
 </html>

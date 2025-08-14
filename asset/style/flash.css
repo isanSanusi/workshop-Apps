@@ -121,16 +121,16 @@
    transform: scale(80%);
 }
 
-@media (max-width: 300px) {
+@media (max-width: 400px) {
    #custom-confirm-container {
       padding: 1rem;
    }
    .flash-alert {
-      font-size: 0.7rem;
+      font-size: 1rem;
    }
    .custom-confirm-box {
-      min-width: 80%;
-      min-height: 3rem;
+      min-width: 90%;
+      min-height: 3.5rem;
    }
 
    .custom-confirm-buttons button {
