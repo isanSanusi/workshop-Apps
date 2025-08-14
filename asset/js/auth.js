@@ -4,15 +4,15 @@ const users = [
 ];
 
 const officer = JSON.parse(localStorage.getItem("loggedInUser"));
-document.getElementById("officer-name").textContent = officer.username;
+document.getElementById("officer-name").innerText = officer.username;
 
-document.getElementById("btn-signups").addEventListener("click", () => {
+function onForgot() {
+   flashAlert("error", "coming soon");
+}
+function onSignup() {
    flashAlert("error", "Please contact admin for registration");
-});
+}
 
-document.getElementById("forgot-password").addEventListener("click", () => {
-   flashAlert("error", "Kasiiaaannn deh loe..");
-});
 // const users = JSON.parse(localStorage.getItem("users")) || [];
 
 function handleLogin(event) {

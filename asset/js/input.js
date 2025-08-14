@@ -176,10 +176,20 @@ function generatePreset(kategori, subkategori) {
    // jumlah default dari diameter min 9 dan max nya 55
    let min = 9,
       max = 55;
+
+   if (kategori == "SUPER") {
+      if (subkategori == 100) {
+         min = 20;
+      }
+      if (subkategori == 130) {
+         min = 15;
+      }
+   }
+
    // namun Jika subkategori dengan ukuran 200 & 260
    // maka ubah minimalnya jadi 20 dan max nya 80
    if (subkategori === 200 || subkategori === 260) {
-      min = 20;
+      min = 25;
       max = 80;
    }
 

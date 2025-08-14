@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-@font-face {
-   font-family: "Poppins";
-   src: url(../asset/font/Poppins-Medium.ttf) format("truetype");
-}
-
 /* =============== GLOBAL RESET =============== */
 * {
    box-sizing: border-box;
@@ -18,7 +13,7 @@ body {
    justify-content: center;
    align-items: center;
    font-family: "Poppins", sans-serif;
-   background: linear-gradient(135deg, #00c6ff, #ff00b5);
+   background: white;
    padding: 60px 20px 120px 20px; /* for fixed footer space */
 }
 
@@ -28,6 +23,7 @@ body {
 
 /* ==================== HALAMAN WELCOME */
 .container {
+   width: 70%;
    background: white;
    padding: 20px 0;
    border-radius: 16px;
@@ -35,7 +31,7 @@ body {
 }
 
 .jumbotron-wrapper {
-   padding: 0 20px 0 20px;
+   padding: 0 2rem 0 2rem;
 }
 
 .jumbotron {
@@ -47,21 +43,20 @@ body {
    justify-content: space-around;
    gap: 2rem;
    border-radius: 12px;
-   margin-bottom: 24px;
+   margin-bottom: 2rem;
    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-   padding: 20px;
+   padding: 2rem;
 }
 
 /* ===== INPUT CUSTOMER ====== */
 
 .jumbotron .officer {
-   margin-bottom: 20px;
    font-size: 1.5rem;
 }
 
 .buyer-input {
    width: 100%;
-   max-width: 400px;
+   max-width: 20rem;
 }
 .buyer-input label {
    font-size: 0.9rem;
@@ -71,10 +66,10 @@ body {
 }
 .buyer-input input {
    width: 100%;
-   padding: 12px 15px;
+   padding: 1rem;
    border: 1px solid #ddd;
    border-radius: 8px;
-   font-size: 14px;
+   font-size: 1rem;
    outline: none;
    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -144,6 +139,7 @@ h2 {
    flex-wrap: wrap;
    justify-content: center;
    gap: 12px;
+   padding-inline: 2rem;
 }
 
 .btn-cat button {
@@ -241,7 +237,7 @@ h2 {
    justify-content: center;
    flex-direction: row;
    flex-wrap: wrap;
-   gap: 1rem;
+   gap: 0.5rem;
 }
 
 .preset-button {
@@ -251,11 +247,11 @@ h2 {
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   width: 80px;
-   height: 60px;
-   font-size: 1rem;
+   width: 5rem;
+   height: 4rem;
+   font-size: 0.8rem;
    font-weight: bold;
-   border-radius: 8px;
+   border-radius: 3px;
    background-color: #1a5dc3;
    color: white;
    cursor: pointer;
@@ -367,7 +363,7 @@ h2 {
 }
 
 /* =============== RESPONSIVE DESIGN =============== */
-@media (max-width: 600px) {
+@media (max-width: 772px) {
    body {
       padding: 0;
       margin: 0;
@@ -396,7 +392,7 @@ h2 {
    }
 
    .jumbotron .officer {
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
    }
 
    /* ====== BUTTON ============ */
@@ -545,7 +541,7 @@ h2 {
    }
 }
 
-@media (max-width: 215px) {
+@media (max-width: 270px) {
    body {
       padding-bottom: 100px;
    }
@@ -575,18 +571,26 @@ h2 {
    }
 
    .jumbotron-wrapper {
-      padding: 10px;
+      padding: 1rem;
    }
 
    .jumbotron {
+      height: 17rem;
       gap: 0;
    }
 
    .btn-cat {
+      width: 100%;
+      display: flex;
       flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 5rem;
    }
 
    .btn-cat button {
-      width: 40%;
+      height: 4rem;
+      width: 20%;
    }
 }

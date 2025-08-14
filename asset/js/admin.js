@@ -15,10 +15,11 @@ const strukturHarga = {
       130: ["9", "10-14", "15-55"],
    },
    super: {
-      100: ["20-24", "25-55"],
-      130: ["15-19", "20-24", "25-29", "30-55"],
-      200: ["25-29", "30-39", "40-49", "50-80"],
-      260: ["25-29", "30-39", "40-80"],
+      // 15-19 ???
+      100: ["20-24", "25-55"], //20-24, 25-55  "9", "10-14", "15-19",
+      130: ["15-19", "20-24", "25-29", "30-55"], //15-19 , 20-24, 25-29, 30-55 "9", "10-14",
+      200: ["25-29", "30-39", "40-49", "50-80"], //25-29
+      260: ["25-29", "30-39", "40-80"], //25-29
    },
 };
 
@@ -156,6 +157,11 @@ function bukaModalHarga(index) {
    });
 
    modalHTML += `
+               <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px;">
+                  <div style="flex:1;">Bongkar</div>
+                  <input type="number" name="bongkar" id="bongkar" value="bongkar"style="width:120px;padding:5px;">
+               </div>
+
                <div style="margin-top:10px;text-align:right;">
                    <button class="btn-option" type="button" onclick="tutupModal()">Batal</button>
                    <button class="btn-option" type="submit">Simpan & Cetak</button>
@@ -210,13 +216,14 @@ function tutupModal() {
 function cetakInvoice(index) {
    const data = semuaData[index];
    if (!data) return alert("Data tidak ditemukan");
-
    const dateObj = new Date();
    const tanggalInvoice = dateObj.toISOString().slice(0, 10);
 
    let totalKeseluruhanVol = 0;
    let totalKeseluruhanHarga = 0;
    let totalKeseluruhanJumlah = 0;
+   let bongkarHarga = 0;
+   let totalAkhir = 0;
 
    let rincianTabel = [
       [
@@ -230,23 +237,41 @@ function cetakInvoice(index) {
       ],
    ];
    let rincianText = "";
-
+   rincianText += `<table border="1" cellspacing="0" cellpadding="3" style="width:100%; border-collapse:collapse; background:white;">
+      <tr style="background:#ddd;">
+            <th>CATEGORY SIZE-DIA</th>
+            <th>Qty(Logs)</th>
+            <th>VOLUME m³</th>
+            <th>PRICE</th>
+            <th>AMOUNT</th>
+      </tr>`;
    data.data.forEach((item) => {
       const kategoriKey = item.kategori.toLowerCase();
       const kelompok = cariKelompok(kategoriKey, item.ukuran, item.diameter);
       const keyHarga = `${kategoriKey}-${item.ukuran}-${kelompok}`;
 
       const harga = hargaPerKelompok[keyHarga] || 0;
-      console.log(keyHarga, harga); // cek kalau udah sesuai
+      const bongkar = hargaPerKelompok["bongkar"] || 0;
+      console.log(`bongkar ${bongkarHarga}`); // cek kalau udah sesuai
 
       const totalRowVol = item.volume * item.jumlah;
       const totalRowHarga = totalRowVol * harga;
 
-      rincianText += `${item.kategori} ${item.ukuran} ${
+      // rincianText += `${item.kategori} ${item.ukuran} ${
+      //    item.diameter
+      // }cm | Jumlah: ${item.jumlah} | Vol: ${totalRowVol.toFixed(
+      //    2
+      // )} m³ | Harga/m³: Rp${harga.toLocaleString()} | Total: Rp${totalRowHarga.toLocaleString()}\n`;
+
+      rincianText += `<tr>
+                        <td>${item.kategori} ${item.ukuran} ${
          item.diameter
-      }cm | Jumlah: ${item.jumlah} | Vol: ${totalRowVol.toFixed(
-         2
-      )} m³ | Harga/m³: Rp${harga.toLocaleString()} | Total: Rp${totalRowHarga.toLocaleString()}\n`;
+      }cm</td>
+                        <td style="text-align: center;" >${item.jumlah}</td>
+                        <td>${totalRowVol.toFixed(2)} m³</td>
+                        <td>Rp ${harga.toLocaleString()};/m³</td>
+                        <td>Rp ${totalRowHarga.toLocaleString()};</td>
+                     </tr>`;
 
       rincianTabel.push([
          item.kategori,
@@ -261,24 +286,29 @@ function cetakInvoice(index) {
       totalKeseluruhanVol += totalRowVol;
       totalKeseluruhanHarga += totalRowHarga;
       totalKeseluruhanJumlah += Number(item.jumlah);
+      bongkarHarga = Number(bongkar);
+      totalAkhir = totalKeseluruhanHarga - bongkarHarga;
    });
 
+   rincianText += `</table>`;
    // Cetak invoice ke tab baru
    const invoiceHTML = `
 <pre>
-==============================================================
-               PT. Meong Coding Sejahtera
+============================================================================================
+                                       PK 47 CIKEMBULAN
 
-Tanggal Invoice : ${tanggalInvoice}
-Kepada          : ${data.pemesan}
-Pengirim        : ${data.oleh}
---------------------------------------------------------------
+Invoice Date    : ${tanggalInvoice}
+Customer        : ${data.pemesan}
+Shiper          : ${data.oleh}
+--------------------------------------------------------------------------------------------
 ${rincianText}
---------------------------------------------------------------
-TOTAL JUMLAH    : ${totalKeseluruhanJumlah} batang
+--------------------------------------------------------------------------------------------
+TOTAL QUANTITY  : ${totalKeseluruhanJumlah} Logs
 TOTAL VOLUME    : ${totalKeseluruhanVol.toFixed(2)} m³
-TOTAL HARGA     : Rp ${totalKeseluruhanHarga.toLocaleString()}
-==============================================================
+SUB TOTAL       : Rp ${totalKeseluruhanHarga.toLocaleString()};
+UNLOADING FEE   : Rp ${bongkarHarga.toLocaleString()};
+GRAND TOTAL     : Rp ${totalAkhir.toLocaleString()};
+============================================================================================
 </pre>
    `;
    const win = window.open("", "_blank");
@@ -287,12 +317,12 @@ TOTAL HARGA     : Rp ${totalKeseluruhanHarga.toLocaleString()}
            <head>
                <title>Invoice - ${tanggalInvoice}</title>
                <style>
-                   body { font-family: monospace; white-space: pre; }
+                   body { display:flex; justify-content:center; align-items: start; font-family: monospace; white-space: pre; font-size: 0.8rem; }
                </style>
            </head>
            <body>
                ${invoiceHTML}
-               <script>window.print();</script>
+               // <script>window.print();</script>
            </body>
        </html>
    `);

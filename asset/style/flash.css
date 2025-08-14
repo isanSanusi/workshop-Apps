@@ -1,127 +1,146 @@
 /* Flash Alert */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-@font-face {
-  font-family: "Poppins";
-  src: url(../asset/font/Poppins-Medium.ttf) format("truetype");
-}
-
 #flash-alert-container {
-  width: 100%;
-  position: fixed;
-  padding-inline: 15px;
-  top: 20px;
-  right: 50%;
-  transform: translateX(50%);
-  z-index: 9999;
+   width: 100%;
+   position: fixed;
+   padding-inline: 1rem;
+   top: 20px;
+   right: 50%;
+   transform: translateX(50%);
+   z-index: 9999;
 }
 
 .flash-alert {
-  font-size: 1.3rem;
-  width: 100%;
-  color: white;
-  padding: 12px 18px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "Poppins", sans-serif;
-  animation: fadein 0.3s, fadeout 0.3s ease 3s forwards;
+   font-size: 1.3rem;
+   width: 100%;
+   color: white;
+   padding: 12px 18px;
+   margin-bottom: 10px;
+   border-radius: 5px;
+   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   font-family: "Poppins", sans-serif;
+   animation: fadein 0.3s, fadeout 0.3s ease 3s forwards;
 }
 
 .flash-alert.success {
-  background-color: #28a745;
+   background-color: #28a745;
 }
 .flash-alert.error {
-  background-color: #dc3545;
+   background-color: #dc3545;
 }
 .flash-alert.warning {
-  background-color: #ffc107;
-  color: black;
+   background-color: #ffc107;
+   color: black;
 }
 .flash-alert.info {
-  background-color: #17a2b8;
+   background-color: #17a2b8;
 }
 
 .flash-alert .icon {
-  font-weight: bold;
+   font-weight: bold;
 }
 
 @keyframes fadein {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+   from {
+      opacity: 0;
+      transform: translateY(-10px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
 }
 
 @keyframes fadeout {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+   from {
+      opacity: 1;
+   }
+   to {
+      opacity: 0;
+      transform: translateY(-10px);
+   }
 }
 
 /* Custom Confirm */
 #custom-confirm-container {
-  font-family: "Poppins", sans-serif;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
+   font-family: "Poppins", sans-serif;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.4);
+   display: none;
+   align-items: center;
+   justify-content: center;
+   z-index: 99999;
 }
 
 .custom-confirm-box {
-  background: white;
-  padding: 20px;
-  border-radius: 6px;
-  text-align: center;
-  min-width: 300px;
-  min-height: 100px;
+   background: white;
+   padding: 1rem;
+   border-radius: 6px;
+   text-align: center;
+   min-width: 23rem;
+   min-height: 10rem;
 }
 
 .custom-confirm-box div {
-  font-size: 1.3rem;
+   font-size: 1.2rem;
 }
 
 .custom-confirm-buttons {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+   margin-top: 15px;
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
 }
 
 .custom-confirm-buttons button {
-  border: none;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  text-align: center;
-  width: 120px;
-  gap: 20px;
-  padding: 10px 18px;
-  cursor: pointer;
-  background-color: #28a745;
-  color: white;
+   border: none;
+   border-radius: 10px;
+   font-size: 1.2rem;
+   text-align: center;
+   width: 9rem;
+   gap: 1rem;
+   padding: 0.9rem 1rem;
+   cursor: pointer;
+   background-color: #28a745;
+   color: white;
 }
 
 .custom-confirm-buttons button:nth-child(1) {
-  background-color: #dc3545;
+   background-color: #dc3545;
 }
 
 .custom-confirm-buttons button:hover {
-  transform: scale(80%);
+   transform: scale(80%);
+}
+
+@media (max-width: 300px) {
+   #custom-confirm-container {
+      padding: 1rem;
+   }
+   .flash-alert {
+      font-size: 0.7rem;
+   }
+   .custom-confirm-box {
+      min-width: 80%;
+      min-height: 3rem;
+   }
+
+   .custom-confirm-buttons button {
+      width: 5rem;
+
+      font-size: 0.8rem;
+      gap: 1rem;
+   }
+
+   .custom-confirm-box div {
+      font-size: 0.7rem;
+   }
 }
