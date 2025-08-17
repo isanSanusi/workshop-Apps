@@ -3,23 +3,6 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link
-         rel="shortcut icon"
-         href="../asset/img/LogiFlow.ico"
-         type="image/x-icon"
-      />
-      <link
-         rel="icon"
-         type="image/png"
-         sizes="16x10"
-         href="../asset/img/LogiFlow-mini.png"
-      />
-      <link
-         rel="apple-touch-icon"
-         sizes="180x180"
-         href="../asset/img/LogiFlow.png"
-      />
-      <link rel="manifest" href="/site.webmanifest" />
       <title>LogiFlow | Signup</title>
       <link rel="stylesheet" href="../asset/style/bootstrap-icons.css" />
       <link rel="stylesheet" href="../asset/style/flash.css" />
@@ -53,8 +36,8 @@
                <div class="roles">
                   <label for="role">Choose Role</label>
                   <select id="role" required>
-                     <option value="admin">admin</option>
-                     <option value="lapangan">lapangan</option>
+                     <option value="administrasi">administrasi</option>
+                     <option value="operasional">operasional</option>
                   </select>
                </div>
                <button type="submit" class="login-btn">Signup</button>
@@ -65,12 +48,69 @@
          </div>
       </div>
 
+      <script src="../asset/js/db.js"></script>
       <script src="../asset/js/bootstrap.bundle.js"></script>
       <script src="../asset/js/flash.js"></script>
       <script>
+         // ========= UTILS HASH (PBKDF2) =========
+         const toHex = (buf) =>
+            [...new Uint8Array(buf)]
+               .map((b) => b.toString(16).padStart(2, "0"))
+               .join("");
+         async function hashPassword(
+            password,
+            {
+               iterations = 100000,
+               saltBytes = 16,
+               hash = "SHA-256",
+               keyLenBytes = 32,
+            } = {}
+         ) {
+            const salt = new Uint8Array(saltBytes);
+            crypto.getRandomValues(salt);
+            const enc = new TextEncoder();
+            const baseKey = await crypto.subtle.importKey(
+               "raw",
+               enc.encode(password),
+               { name: "PBKDF2" },
+               false,
+               ["deriveBits"]
+            );
+            const bits = await crypto.subtle.deriveBits(
+               { name: "PBKDF2", hash, salt, iterations },
+               baseKey,
+               keyLenBytes * 8
+            );
+            return {
+               hash,
+               iterations,
+               salt: toHex(salt.buffer),
+               derivedKey: toHex(bits),
+            };
+         }
+
+         // ========= HELPERS USER =========
+         async function getUser(username) {
+            const users = await Storage.get("users_db");
+            return users.find((u) => u.id === username) || null;
+         }
+         async function saveUser(username, data) {
+            await Storage.set("users_db", { id: username, ...data });
+         }
+
+         // ========= CEK HAK AKSES (hanya admin boleh buka signup) =========
+         (async () => {
+            const logged = await Storage.get("loggedInUser");
+            const currentUser = logged && logged.length ? logged[0] : null;
+            if (!currentUser || currentUser.role !== "administrasi") {
+               window.location.href = "./login.html";
+            }
+         })();
+
+         // ========= SIGNUP =========
          document
             .getElementById("signupForm")
-            .addEventListener("submit", function (e) {
+            .addEventListener("submit", async (e) => {
                e.preventDefault();
 
                const username = document
@@ -86,27 +126,17 @@
                   return;
                }
 
-               // Ambil data user yang sudah ada
-               let users = JSON.parse(localStorage.getItem("users")) || [];
-
-               // Cek apakah username sudah dipakai
-               if (users.some((u) => u.username === username)) {
-                  flashAlert("error", "Username is exist");
+               const existing = await getUser(username);
+               if (existing) {
+                  flashAlert("error", "Username already exists");
                   return;
                }
 
-               // Simpan user baru
-               users.push({
-                  username,
-                  password,
-                  role,
-               });
+               const record = await hashPassword(password);
+               await saveUser(username, { ...record, role });
 
-               localStorage.setItem("users", JSON.stringify(users));
-               flashAlert("success", "Horay..New user was added");
-               setTimeout(() => {
-                  window.location.href = "./admin.html";
-               }, 2000);
+               flashAlert("success", `User ${username} was created`);
+               setTimeout(() => (window.location.href = "./admin.html"), 1500);
             });
       </script>
    </body>

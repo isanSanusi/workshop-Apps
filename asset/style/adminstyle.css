@@ -13,6 +13,10 @@ a {
    text-decoration: none;
 }
 
+button {
+   cursor: pointer;
+}
+
 nav {
    display: flex;
    justify-content: space-around;

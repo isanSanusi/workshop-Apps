@@ -68,8 +68,17 @@
             </form>
          </div>
       </div>
-      <script src="../asset/js/auth.js"></script>
+      <script src="../asset/js/db.js"></script>
+      <script src="../asset/js/authenticate.js"></script>
       <script src="../asset/js/flash.js"></script>
       <script src="../asset/js/bootstrap.bundle.js"></script>
+      <script>
+         function onForgot() {
+            flashAlert("error", "coming soon");
+         }
+         function onSignup() {
+            flashAlert("error", "Please contact admin for registration");
+         }
+      </script>
    </body>
 </html>

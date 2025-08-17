@@ -47,9 +47,10 @@
          </div>
       </nav>
       <div class="container" id="lunasContainer"></div>
+      <script src="../asset/js/db.js"></script>
       <script src="../asset/js/flash.js"></script>
       <script>
-         // Struktur kelompok harga
+         // ================== STRUKTUR HARGA ==================
          const strukturHarga = {
             standardReject: ["9", "10-14", "15-55"],
             super: {
@@ -60,86 +61,82 @@
             },
          };
 
-         function renderDataLunas() {
-            const dataLunas =
-               JSON.parse(localStorage.getItem("kayu_lunas")) || [];
+         // helper cari kelompok diameter
+         function cariKelompok(kategori, ukuran, diameter) {
+            if (
+               kategori.toLowerCase() === "standard" ||
+               kategori.toLowerCase() === "reject"
+            ) {
+               kategori = "standardReject";
+            } else {
+               kategori = kategori.toLowerCase();
+            }
+            const listKelompok =
+               strukturHarga[kategori]?.[ukuran] ||
+               strukturHarga[kategori] ||
+               [];
+            for (const kelompok of listKelompok) {
+               const [min, max] = kelompok.split("-").map(Number);
+               if (max) {
+                  if (diameter >= min && diameter <= max) return kelompok;
+               } else {
+                  if (diameter >= min) return kelompok;
+               }
+            }
+            return null;
+         }
+
+         // ================== RENDER ==================
+         async function renderDataLunas() {
+            const dataLunas = (await Storage.get("kayu_lunas")) || [];
+            const hargaRaw = await Storage.get("harga_per_kelompok");
+            // disimpan dengan id:'all' → ambil index 0
             const hargaPerKelompok =
-               JSON.parse(localStorage.getItem("harga_per_kelompok")) || {};
+               hargaRaw && hargaRaw.length ? hargaRaw[0] : {};
+
             const container = document.getElementById("lunasContainer");
             container.innerHTML = "";
 
-            function cariKelompok(kategori, ukuran, diameter) {
-               if (
-                  kategori.toLowerCase() === "standard" ||
-                  kategori.toLowerCase() === "reject"
-               ) {
-                  kategori = "standardReject";
-               } else {
-                  kategori = kategori.toLowerCase();
-               }
-               const listKelompok =
-                  strukturHarga[kategori]?.[ukuran] ||
-                  strukturHarga[kategori] ||
-                  [];
-               for (const kelompok of listKelompok) {
-                  const [min, max] = kelompok.split("-").map(Number);
-                  if (max) {
-                     if (diameter >= min && diameter <= max) return kelompok;
-                  } else {
-                     if (diameter >= min) return kelompok;
-                  }
-               }
-               return null;
-            }
-
-            if (dataLunas.length === 0) {
+            if (!dataLunas.length) {
                container.innerHTML = "<p>Tidak ada transaksi lunas.</p>";
                return;
             }
 
-            dataLunas.forEach((transaksi, index) => {
+            dataLunas.forEach((transaksi) => {
                const date = new Date(transaksi.waktu);
                let cardHTML = `
-               <div class="card" >
-                  <div class="wrapper-info">  
-                     <h3>Buyer: ${transaksi.pemesan}</h3>
-                     <p>Date: ${date
-                        .toISOString()
-                        .slice(0, 16)
-                        .replace("T", " - ")}</p>
-                     <p>Sender: ${transaksi.oleh}</p>
-                     </div>
-                  
-            `;
+      <div class="card">
+        <div class="wrapper-info">
+          <h3>Buyer: ${transaksi.pemesan}</h3>
+          <p>Date: ${date.toISOString().slice(0, 16).replace("T", " - ")}</p>
+          <p>Sender: ${transaksi.oleh}</p>
+        </div>`;
 
-               // Kelompokkan berdasarkan kategori
+               // kelompokkan per kategori
                const kategoriMap = {};
                transaksi.data.forEach((d) => {
                   if (!kategoriMap[d.kategori]) kategoriMap[d.kategori] = [];
                   kategoriMap[d.kategori].push(d);
                });
 
-               // Render setiap kategori
                Object.keys(kategoriMap).forEach((kat) => {
                   let totalVol = 0,
                      totalJml = 0,
                      totalHarga = 0;
 
                   cardHTML += `
-                  <h5>Category: ${kat}</h5>
-            
-                  <table>
-                     <thead>
-                        <tr>
-                           <th>Ukuran</th>
-                           <th>Diameter</th>
-                           <th>Volume m³</th>
-                           <th>Jumlah</th>
-                           <th>Harga/m³</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-               `;
+        <h5>Category: ${kat}</h5>
+        <table>
+          <thead>
+            <tr>
+              <th>Ukuran</th>
+              <th>Diameter</th>
+              <th>Volume m³</th>
+              <th>Jumlah</th>
+              <th>Harga/m³</th>
+            </tr>
+          </thead>
+          <tbody>`;
 
                   kategoriMap[kat].forEach((row) => {
                      const kelompok = cariKelompok(
@@ -157,49 +154,42 @@
                      totalHarga += row.volume * hargaM3;
 
                      cardHTML += `
-                     <tr>
-                        <td>${row.ukuran}</td>
-                        <td>${row.diameter}</td>
-                        <td>${row.volume}</td>
-                        <td>${row.jumlah}</td>
-                        <td>Rp ${hargaM3.toLocaleString()}</td>
-                     </tr>
-                  `;
+          <tr>
+            <td>${row.ukuran}</td>
+            <td>${row.diameter}</td>
+            <td>${row.volume}</td>
+            <td>${row.jumlah}</td>
+            <td>Rp ${hargaM3.toLocaleString()}</td>
+          </tr>`;
                   });
 
                   cardHTML += `
-                     </tbody>
-                  </table>
-                  <p class="total-line">
-                     <span><strong>Total Volume:</strong> ${totalVol} m³ </span> 
-                     <span><strong>Total Jumlah:</strong> ${totalJml} </span>
-                     <span><strong>Total Harga:</strong> Rp ${totalHarga.toLocaleString()} </span>
-                  </p>
-               `;
+          </tbody>
+        </table>
+        <p class="total-line">
+          <span><strong>Total Volume:</strong> ${totalVol} m³ </span>
+          <span><strong>Total Jumlah:</strong> ${totalJml} </span>
+          <span><strong>Total Harga:</strong> Rp ${totalHarga.toLocaleString()} </span>
+        </p>`;
                });
 
-               // Tambahkan tombol hapus
                cardHTML += `
-                  <button class="btn-delete" onclick="hapusTransaksi(${index})">Delete Transaction</button>
-               </div>
-            `;
+      <button class="btn-delete" onclick="hapusTransaksi(${transaksi.id})">Delete Transaction</button>
+      </div>`;
 
                container.innerHTML += cardHTML;
             });
          }
 
-         function hapusTransaksi(index) {
-            let dataLunas =
-               JSON.parse(localStorage.getItem("kayu_lunas")) || [];
-            flashConfirm("Delete transaction record?").then((result) => {
-               if (result) {
-                  dataLunas.splice(index, 1);
-                  localStorage.setItem("kayu_lunas", JSON.stringify(dataLunas));
-                  flashAlert("success", "Transaction was deleted!");
-                  renderDataLunas();
-               } else {
+         async function hapusTransaksi(id) {
+            flashConfirm("Delete transaction record?").then(async (ok) => {
+               if (!ok) {
                   flashAlert("info", "Delete canceled.");
+                  return;
                }
+               await Storage.deleteRecord("kayu_lunas", id);
+               flashAlert("success", "Transaction was deleted!");
+               renderDataLunas();
             });
          }
 

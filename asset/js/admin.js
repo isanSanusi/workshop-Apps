@@ -1,30 +1,28 @@
 // ==================== VARIABEL GLOBAL ====================
-let semuaData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
-let hargaPerKelompok =
-   JSON.parse(localStorage.getItem("harga_per_kelompok")) || {};
+let semuaData = []; // data transaksi operasional (kayu_terkirim)
+let hargaPerKelompok = {}; // tabel harga per kelompok
 let tabelContainer = document.getElementById("tabelRekap");
 
-/// ==================== STRUKTUR HARGA DASAR ====================
+// ==================== STRUKTUR HARGA DASAR ====================
 const strukturHarga = {
-   standard: {
-      100: ["9", "10-14", "15-55"],
-      130: ["9", "10-14", "15-55"],
-   },
-   reject: {
-      100: ["9", "10-14", "15-55"],
-      130: ["9", "10-14", "15-55"],
-   },
+   standard: { 100: ["9", "10-14", "15-55"], 130: ["9", "10-14", "15-55"] },
+   reject: { 100: ["9", "10-14", "15-55"], 130: ["9", "10-14", "15-55"] },
    super: {
-      // 15-19 ???
-      100: ["20-24", "25-55"], //20-24, 25-55  "9", "10-14", "15-19",
-      130: ["15-19", "20-24", "25-29", "30-55"], //15-19 , 20-24, 25-29, 30-55 "9", "10-14",
-      200: ["25-29", "30-39", "40-49", "50-80"], //25-29
-      260: ["25-29", "30-39", "40-80"], //25-29
+      100: ["20-24", "25-55"],
+      130: ["15-19", "20-24", "25-29", "30-55"],
+      200: ["25-29", "30-39", "40-49", "50-80"],
+      260: ["25-29", "30-39", "40-80"],
    },
 };
 
 // ==================== RENDER KARTU TRANSAKSI ====================
-function renderCards() {
+async function renderCards() {
+   // 🔄 ambil ulang data dari IndexedDB
+   semuaData = (await Storage.get("kayu_terkirim")) || [];
+   hargaPerKelompok =
+      ((await Storage.get("harga_per_kelompok")) || [])[0] || {};
+   // ^ karena store keyPath:id → kalau kamu simpan sebagai object tunggal, pastikan id nya konsisten (lihat simpan di modal)
+
    let html = "";
 
    semuaData.forEach((entry, entryIndex) => {
@@ -33,27 +31,26 @@ function renderCards() {
       const jam = dateObj.toTimeString().slice(0, 5);
 
       html += `
-        <div class="card" style="border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:6px; background:#f9f9f9;">
-        <div class="wrapper-info">       
-        <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
-        <p>Date: ${tanggal} - ${jam}</p>
-               <p>Sender: <strong>${entry.oleh}</strong></p>
-               </div><div class="tabel-wrapper">
-        `;
+      <div class="card" style="border:1px solid #ccc; padding:10px; margin-bottom:20px; border-radius:6px; background:#f9f9f9;">
+        <div class="wrapper-info">
+          <h3>Buyer: <strong>${entry.pemesan}</strong></h3>
+          <p>Date: ${tanggal} - ${jam}</p>
+          <p>Sender: <strong>${entry.oleh}</strong></p>
+        </div>
+        <div class="tabel-wrapper">`;
 
       const kategoriUnik = [...new Set(entry.data.map((d) => d.kategori))];
 
       kategoriUnik.forEach((kat) => {
          html += `<div><h4>Category: ${kat}</h4>`;
          html += `
-            <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; background:white;">
-                <tr style="background:#ddd;">
-                    <th>Ukuran</th>
-                    <th>Diameter</th>
-                    <th>Volume m³</th>
-                    <th>Jumlah</th>
-                </tr>
-            `;
+        <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse:collapse; background:white;">
+          <tr style="background:#ddd;">
+            <th>Ukuran</th>
+            <th>Diameter</th>
+            <th>Volume m³</th>
+            <th>Jumlah</th>
+          </tr>`;
 
          let totalVol = 0;
          let totalJumlah = 0;
@@ -64,43 +61,42 @@ function renderCards() {
                const totalRow = row.volume * row.jumlah;
                totalVol += totalRow;
                totalJumlah += row.jumlah;
-
                html += `
-                <tr>
-                    <td>${row.ukuran}</td>
-                    <td>${row.diameter}</td>
-                    <td>${row.volume}</td>
-                    <td>${row.jumlah}</td>
-                </tr>
-                `;
+            <tr>
+              <td>${row.ukuran}</td>
+              <td>${row.diameter}</td>
+              <td>${row.volume}</td>
+              <td>${row.jumlah}</td>
+            </tr>`;
             });
 
          html += `
-                <tr style="font-weight:bold; background:#eee;">
-                    <td colspan="2">TOTAL</td>
-                    <td>${totalVol.toFixed(2)}</td>
-                    <td>${totalJumlah}</td>
-                </tr>
-            </table></div>`;
+        <tr style="font-weight:bold; background:#eee;">
+          <td colspan="2">TOTAL</td>
+          <td>${totalVol.toFixed(2)}</td>
+          <td>${totalJumlah}</td>
+        </tr>
+        </table></div>`;
       });
 
       html += `</div>
-            <div style="margin-top:10px;">
-                <button class="btn-option" onclick="bukaModalHarga(${entryIndex})">Cetak Invoice</button>
-                <button class="btn-option" onclick="tandaiLunas(${entryIndex})">Tandai Lunas</button>
-            </div>
-        </div>
-        `;
+      <div style="margin-top:10px;">
+        <button class="btn-option" onclick="bukaModalHarga(${entryIndex})">Cetak Invoice</button>
+        <button class="btn-option" onclick="tandaiLunas(${entryIndex})">Tandai Lunas</button>
+      </div>
+    </div>`;
    });
 
    tabelContainer.innerHTML = html;
 }
 
 // ==================== MODAL INPUT HARGA ====================
-function bukaModalHarga(index) {
+async function bukaModalHarga(index) {
    const data = semuaData[index];
    if (!data) return alert("Data tidak ditemukan");
 
+   // TODO: pakai modalHTML kamu yang sudah ada.
+   // pastikan formHarga menghasilkan key2 yang kemudian disimpan di 'hargaPerKelompok'
    let modalHTML = `
    <div id="modalHarga" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0008;display:flex;justify-content:center;align-items:center;z-index:9999;">
        <div style="background:white;padding:20px;border-radius:8px;max-height:90%;overflow:auto;width:500px;">
@@ -173,8 +169,7 @@ function bukaModalHarga(index) {
 
    document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-   // Handle submit
-   document.getElementById("formHarga").onsubmit = function (e) {
+   document.getElementById("formHarga").onsubmit = async function (e) {
       e.preventDefault();
       const formData = new FormData(e.target);
       formData.forEach((val, key) => {
@@ -182,8 +177,6 @@ function bukaModalHarga(index) {
 
          if (key.startsWith("standardReject-")) {
             const range = key.replace("standardReject-", "");
-
-            // Simpan untuk semua kombinasi ukuran & kategori
             ["standard", "reject"].forEach((kat) => {
                ["100", "130"].forEach((ukuran) => {
                   hargaPerKelompok[`${kat}-${ukuran}-${range}`] = harga;
@@ -194,14 +187,15 @@ function bukaModalHarga(index) {
          }
       });
       Object.keys(hargaPerKelompok).forEach((k) => {
-         if (k.startsWith("standardReject-")) {
-            delete hargaPerKelompok[k];
-         }
+         if (k.startsWith("standardReject-")) delete hargaPerKelompok[k];
       });
-      localStorage.setItem(
-         "harga_per_kelompok",
-         JSON.stringify(hargaPerKelompok)
-      );
+
+      // Simpan sebagai satu record tunggal (id: 'all') supaya mudah di-get
+      await Storage.set("harga_per_kelompok", {
+         id: "all",
+         ...hargaPerKelompok,
+      });
+
       tutupModal();
       cetakInvoice(index);
    };
@@ -212,7 +206,13 @@ function tutupModal() {
    if (modal) modal.remove();
 }
 
-// ==================== CETAK INVOICE ====================
+function roundTotal(num) {
+   if (num === 0) return 0;
+   let digits = Math.floor(Math.log10(num));
+   let pows = Math.pow(10, digits);
+   return Math.round(num / pows) * pows;
+}
+
 function cetakInvoice(index) {
    const data = semuaData[index];
    if (!data) return alert("Data tidak ditemukan");
@@ -224,6 +224,7 @@ function cetakInvoice(index) {
    let totalKeseluruhanJumlah = 0;
    let bongkarHarga = 0;
    let totalAkhir = 0;
+   let grandTotal = 0;
 
    let rincianTabel = [
       [
@@ -257,12 +258,6 @@ function cetakInvoice(index) {
       const totalRowVol = item.volume * item.jumlah;
       const totalRowHarga = totalRowVol * harga;
 
-      // rincianText += `${item.kategori} ${item.ukuran} ${
-      //    item.diameter
-      // }cm | Jumlah: ${item.jumlah} | Vol: ${totalRowVol.toFixed(
-      //    2
-      // )} m³ | Harga/m³: Rp${harga.toLocaleString()} | Total: Rp${totalRowHarga.toLocaleString()}\n`;
-
       rincianText += `<tr>
                         <td>${item.kategori} ${item.ukuran} ${
          item.diameter
@@ -288,6 +283,7 @@ function cetakInvoice(index) {
       totalKeseluruhanJumlah += Number(item.jumlah);
       bongkarHarga = Number(bongkar);
       totalAkhir = totalKeseluruhanHarga - bongkarHarga;
+      grandTotal = roundTotal(totalAkhir);
    });
 
    rincianText += `</table>`;
@@ -307,7 +303,7 @@ TOTAL QUANTITY  : ${totalKeseluruhanJumlah} Logs
 TOTAL VOLUME    : ${totalKeseluruhanVol.toFixed(2)} m³
 SUB TOTAL       : Rp ${totalKeseluruhanHarga.toLocaleString()};
 UNLOADING FEE   : Rp ${bongkarHarga.toLocaleString()};
-GRAND TOTAL     : Rp ${totalAkhir.toLocaleString()};
+GRAND TOTAL     : Rp ${grandTotal.toLocaleString()};
 ============================================================================================
 </pre>
    `;
@@ -377,33 +373,57 @@ function cariKelompok(kategori, ukuran, diameter) {
    return "";
 }
 
-function tandaiLunas(index) {
-   let dataTerkirim = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
-   let dataLunas = JSON.parse(localStorage.getItem("kayu_lunas")) || [];
+// ==================== FUNGSI TANDAI LUNAS ====================
+async function tandaiLunas(index) {
+   let dataTerkirim = (await Storage.get("kayu_terkirim")) || [];
+   let dataLunas = (await Storage.get("kayu_lunas")) || [];
 
-   if (!dataTerkirim[index]) return alert("Data tidak ditemukan!");
+   const current = dataTerkirim[index];
+   if (!current) return alert("Data tidak ditemukan!");
 
-   const transaksi = dataTerkirim[index];
-   dataLunas.push(transaksi);
-   localStorage.setItem("kayu_lunas", JSON.stringify(dataLunas));
+   dataLunas.push(current);
+   await Storage.set(
+      "kayu_lunas",
+      dataLunas.map((d) => ({ id: d.id || String(d.id || index), ...d }))
+   );
 
-   dataTerkirim.splice(index, 1);
-   localStorage.setItem("kayu_terkirim", JSON.stringify(dataTerkirim));
+   // hapus dari terkirim
+   const idToRemove = current.id;
+   // cara termudah: clear & tulis ulang selain yang dihapus
+   await Storage.remove("kayu_terkirim");
+   const sisa = dataTerkirim.filter((d, i) => (d.id || i) !== idToRemove);
+   for (const d of sisa) {
+      await Storage.set("kayu_terkirim", {
+         id: d.id || generateFallbackId(),
+         ...d,
+      });
+   }
 
    flashAlert("success", "Transaksi berhasil di tandai lunas");
    renderCards();
 }
 
+function generateFallbackId() {
+   if (crypto?.randomUUID) return crypto.randomUUID();
+   return "id_" + Date.now() + "_" + Math.random().toString(16).slice(2);
+}
+
 // ==================== AUTO REFRESH ====================
-setInterval(() => {
-   const latestData = JSON.parse(localStorage.getItem("kayu_terkirim")) || [];
+setInterval(async () => {
+   const latestData = (await Storage.get("kayu_terkirim")) || [];
    if (JSON.stringify(latestData) !== JSON.stringify(semuaData)) {
       semuaData = latestData;
       renderCards();
    }
 }, 2000);
 
-// ==================== LOAD AWAL ====================
-window.onload = () => {
+// ==================== LOAD AWAL + CEK ROLE ADMIN ====================
+window.onload = async () => {
+   const logged = await Storage.get("loggedInUser");
+   const user = logged && logged.length ? logged[0] : null;
+   if (!user || user.role !== "administrasi") {
+      location.href = "./login.html";
+      return;
+   }
    renderCards();
 };
